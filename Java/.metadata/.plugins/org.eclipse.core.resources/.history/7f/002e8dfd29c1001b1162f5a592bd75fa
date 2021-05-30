@@ -1,8 +1,0 @@
-package ticTacToe;
-
-public class TicTacToe {
-
-	private boolean[] field = new boolean[9];
-	private int[] players = new int[] {0, 1};
-	
-}
