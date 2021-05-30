@@ -45,7 +45,7 @@ public class TicTacToe {
 		int current;
 		for(int i = 0; i < 8; i++) {
 			current = WINNING_STATES[i];
-			
+			 
 		}
 	}
 
