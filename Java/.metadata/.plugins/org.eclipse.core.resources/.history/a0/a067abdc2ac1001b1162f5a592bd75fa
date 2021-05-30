@@ -1,0 +1,22 @@
+package ticTacToe;
+
+public class TicTacToe {
+
+	private int field;
+	private int[] players = new int[] { 0, 1 };
+
+	// debug
+	public TicTacToe() {
+		draw();
+	}
+	
+	private void draw() {
+		final String HORIZONTAL = "-------------";
+		String print = "  X  |  O  |  X  ";
+		print += HORIZONTAL;
+		print += "  X  |  O  |  X  ";
+		print += HORIZONTAL;
+		print += "  X  |  O  |  X  ";
+		System.out.println(print);
+	}
+}

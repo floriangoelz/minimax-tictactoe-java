@@ -1,0 +1,47 @@
+package ticTacToe;
+
+public class TicTacToe {
+
+	private int field = 100;
+	private int[] players = new int[] { 0, 1 };
+
+	// debug
+	public TicTacToe() {
+		draw();
+		setBit(1);
+	}
+	
+	private void setBit(int bitToSet) {
+		int newField = field;
+		System.out.println(Integer.toBinaryString(newField));
+		
+		field = newField;
+	}
+	
+	private void draw() {
+		final String HORIZONTAL = "-----------------\n";
+		
+		
+		
+		String print = "  X  |  O  |  X  \n";
+		print += HORIZONTAL;
+		print += "  X  |  O  |  X  \n";
+		print += HORIZONTAL;
+		print += "  X  |  O  |  X  \n";
+		
+		
+		
+		System.out.println(print);
+		
+		
+		
+		
+//		final String HORIZONTAL = "-----------------\n";
+//		String print = "  X  |  O  |  X  \n";
+//		print += HORIZONTAL;
+//		print += "  X  |  O  |  X  \n";
+//		print += HORIZONTAL;
+//		print += "  X  |  O  |  X  \n";
+//		System.out.println(print);
+	}
+}

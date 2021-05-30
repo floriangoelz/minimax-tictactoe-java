@@ -1,0 +1,49 @@
+package ticTacToe;
+
+public class TicTacToe {
+
+	private int field = 1;
+	private int[] players = new int[] { 0, 1 };
+	private char[] symbols = new char[] { 'X', 'O' };
+
+	// debug
+	public TicTacToe() {
+		draw();
+		setBit(1);
+	}
+
+	private int setBit(int state, int bitToSet) {
+		int newField = state;
+		// System.out.println(Integer.toBinaryString(newField));
+
+		return newField;
+	}
+
+	private char getSymbol(int row, int col) {
+		int mask = setBit(0, row * 3 + col);
+		if ((mask & this.field) == mask) {
+			return symbols[0];
+		} else if ((mask & (this.field >> 9)) == mask) {
+			return symbols[1];
+		}
+		return ' ';
+	}
+
+	private void draw() {
+		final String HORIZONTAL = "\n-----------------\n";
+		String print = "  ";
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < 3; j++) {
+				
+			}
+		}
+		print += getSymbol(row, col)
+		System.out.println(print);
+
+//		print = "  X  |  O  |  X  \n";
+//		print += HORIZONTAL;
+//		print += "  X  |  O  |  X  \n";
+//		print += HORIZONTAL;
+//		print += "  X  |  O  |  X  \n";
+	}
+}
