@@ -60,7 +60,7 @@ public class Main {
 				break;
 			}
 			do {
-				System.out.println("You want to play another round (y,n)? Let us know: ");
+				System.out.print("You want to play another round (y,n)? Let us know: ");
 				again = sc.next().toLowerCase();
 			} while (!again.equals("y") && !again.equals("n"));
 			if (again.equals("n")) {
