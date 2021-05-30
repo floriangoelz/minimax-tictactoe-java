@@ -1,0 +1,41 @@
+@startuml ppg herzfrequenzmesser
+class MainActivity{
+    -camera
+    -duration
+    
+    -showActiveMeasurement()
+    -hideActiveMeasurement()
+    -createMeasurement()
+    -showResult()
+}
+
+class ResultActivity{
+    -Measurement
+
+    -displayResult()
+    -backToMainActivity()
+    #onCreate()
+}
+
+class ImageFile{
+    -File image
+
+    -cropImage() : void
+    -toValue() : float[]
+}
+
+class File{}
+
+File ^-- ImageFile
+
+class Measurement{
+    -camera
+    -int[] redValues
+    -int imgPerSecond
+
+    -captureImage() : ImageFile
+    +start() : void
+    -analyzeImage(imageFile) : int
+    calculateREsult(): int
+}
+@enduml

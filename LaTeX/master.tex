@@ -1,0 +1,124 @@
+\documentclass[
+	11pt,
+	BCOR=5mm,
+	DIV=12,
+	headinclude=on,
+	footinclude=off,
+	footheight = 23.39284pt,
+	parskip=half,
+	bibliography=totoc,
+	listof=entryprefix,
+	toc=listof,
+	numbers=noenddot,
+	plainfootsepline]{scrreprt}
+
+%	Konfigurationsdatei einziehen
+
+\input{config}
+
+\begin{document}
+
+%% BITTE GEBEN SIE HIER WICHTIGE INFORMATIONEN DER ARBEIT AN!
+%% DIESE INFORMATIONEN MÜSSEN GESETZT SEIN, UM TITELBLATT, ABSTRACT UND
+%% EIGENSTÄNDIGKEITSERKLÄRUNG AUTOMATISCH ANZUPASSEN!
+\TitelDerArbeit{Implementierung vom MiniMax-Algorithmus und TicTacToe in Java}
+\TitelDerArbeitEnglisch{}
+\AutorDerArbeit{Fabio Jungmann \& Florian Gölz }
+\Matrikelnummer{7527342, 9223147 }
+\Kurs{TINF18AI2}
+
+\input{titlepage}
+
+\pagenumbering{Roman} % Römische Seitennummerierung
+\normalfont
+
+%	Ehrenwörtliche Erklärung
+% Wird die folgende Zeile auskommentiert, erscheint die ehrenwörtliche
+% Erklärung im Inhaltsverzeichnis.
+
+% \addcontentsline{toc}{chapter}{Ehrenwörtliche Erklärung}
+\input{ewerkl.tex}
+
+% Sperrvermerk
+%\input{sperrvermerk.tex}
+
+%	Anmerkung zur Verwendung geschlechterspezifischer Bezeichnungen (Inklusionsverweis)
+\input{anmerkung.tex}
+
+%--------------------------------
+% Verzeichnisse - nicht benötige Verzeichnisse bitte auskommentieren / löschen.
+%--------------------------------
+
+
+%	Kurzfassung in Deutsch und Englisch
+\input{kurzfassung}
+\addcontentsline{toc}{chapter}{Kurzfassung}
+\input{abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+%	Inhaltsverzeichnis
+\tableofcontents
+
+%	Abbildungsverzeichnis
+%\listoffigures
+
+%	Tabellenverzeichnis
+%\listoftables
+
+%	Listingsverzeichnis
+%\lstlistoflistings
+
+% 	Algorithmenverzeichnis
+%\listofalgorithms
+
+% 	Abkürzungsverzeichnis (siehe Datei acronyms.tex!)
+%\input{acronyms}
+%\ohead{Acronyms} % Neue Header-Definition
+
+%--------------------------------
+% Start des Textteils der Arbeit
+%--------------------------------
+\clearpage
+\ihead{\chaptername~\thechapter} % Neue Header-Definition (inner header)
+\ohead{\headmark} % Neue Header-Definition (outer header)
+\pagenumbering{arabic}  % Arabische Seitenzahlen
+
+% 	Anleitungs-Datei anleitung.tex einziehen. Auf diese Weise sollten Sie versuchen, für jedes einzelne
+% Kapitel eine eigene Datei anzulegen und mittels input-Kommando einzuziehen.
+% Nach dem Lesen auskommentieren
+% \input{anleitung}
+
+\definecolor{light-gray}{gray}{0.95}
+\newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}}
+
+%	Hauptteil der Arbeit
+\input{01_einleitung}
+\input{02_theorie}
+\input{03_praxis}
+\input{04_fazit}
+
+%	Literaturverzeichnis
+\clearpage
+\ihead{\chaptername~\thechapter} 
+\ohead{\headmark} 
+\pagenumbering{Roman}
+\setcounter{page}{9}
+
+\printbibliography[title=Literaturverzeichnis]
+
+\cleardoublepage
+
+%	Glossar
+%\addcontentsline{toc}{chapter}{Glossar}
+%\input{glossary.tex}
+%\newpage
+
+% Der Anhang beginnt hier - jedes Kapitel wird alphabetisch aufgezählt. (Anhang A, B usw.)
+\appendix
+\ihead{\appendixname~\thechapter} % Neue Header-Definition
+
+%appendix.tex einziehen
+\addcontentsline{toc}{chapter}{Anhang}
+%\input{appendix}
+
+\end{document}
