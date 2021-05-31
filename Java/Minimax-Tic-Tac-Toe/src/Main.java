@@ -14,6 +14,9 @@ public class Main {
 		new Main().run();
 	}
 
+	/**
+	 * Starts the whole program
+	 */
 	private void run() {
 		// initialize Scanner for inputs
 		sc = new Scanner(System.in);
@@ -29,13 +32,21 @@ public class Main {
 			running = anotherGameInput();
 		}
 		sc.close();
-		System.out.println("Program ended.");
+		System.out.println("End of program");
 	}
-	
+
+	/**
+	 * Gets a user input and converts it to lower case
+	 * 
+	 * @return lowercase user input
+	 */
 	private String getUserInput() {
 		return sc.next().toLowerCase();
 	}
 
+	/**
+	 * Getting and processing the next move of a player
+	 */
 	private void nextMove() {
 		int[] move;
 		if (game.getTurn()) {
@@ -56,6 +67,12 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Gets the input of the turn the player wants to make and repeats it until the
+	 * input is valid
+	 * 
+	 * @return
+	 */
 	private int[] turnInput() {
 		boolean valid = false;
 		int[] move = new int[2];
@@ -76,6 +93,9 @@ public class Main {
 		return move;
 	}
 
+	/**
+	 * Shows the game result after the game ended
+	 */
 	private void gameEnded() {
 		switch (game.getGameStatus()) {
 		case PLAYER_X_WON:
@@ -92,6 +112,12 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Asks for the input to determine whether another game will start and repeats
+	 * until the input is valid
+	 * 
+	 * @return true if another game shall start, otherwise false
+	 */
 	private boolean anotherGameInput() {
 		String input;
 		do {
