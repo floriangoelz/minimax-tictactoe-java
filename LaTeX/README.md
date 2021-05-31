@@ -1,2 +1,2 @@
-# Studienarbeit
-Thema: Erfassung biometrischer Daten mit dem Smartphone - Exemplarische Implementierung einer Applikation zur Messung des Pulses
+# Hausarbeit Wissensbasierte Systeme
+Thema: Implementierung von TicTacToe und dem Minimax-Algorithmus in Java
