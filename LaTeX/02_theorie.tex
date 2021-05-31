@@ -1,0 +1,18 @@
+\chapter{Theorie}
+\section{Der Minimax-Algorithmus}
+
+Der Minimax-Algorithmus, ist ein Algorithmus, der für ein gegebenes Spiel eine Spielstrategie ermittelt. 
+Das Spiel muss dabei ein Zwei-Personen-Nullsummenspiel mit perfekter Information sein. Die Idee ist, mögliche 
+Spielverläufe zu bewerten und damit für einen gegebenen Spielzustand den Zug zu wählen, der zum besten Spielzustand 
+für den zugewiesenen Spieler führt. Als Basis für diese Entscheidung dient eine Funktion utility. Diese Funktion 
+nimmt den aktuellen Spielstand und überprüft, in welchem Zustand sich die übergebene Spielsituation befindet. 
+
+\begin{itemize}
+    \item Kann im besten Fall ein Sieg erzielt werden, wird der Wert 1 zurückgegeben
+    \item Ist nur ein Unentschieden möglich, wird der Wert 0 zurückgegeben
+    \item Ist eine Niederlage nicht zu abzuwenden, wird der Wert -1 zurückgegeben
+\end{itemize}
+
+Um dies zu ermitteln, wird ein Baum mit allen möglichen Spielverläufen berechnet. Die utility Funktion überprüft 
+nun rekursiv für jeden potentiellen Spielzustand, ob das Spiel beendet wurde. Ist dies der Fall, ist das 
+Ende des Baumes erreicht und 
