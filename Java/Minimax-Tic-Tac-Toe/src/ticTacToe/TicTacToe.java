@@ -104,8 +104,8 @@ public class TicTacToe {
 	 * location is inside bounds and not already taken
 	 * 
 	 * @param state the move will be checked
-	 * @param row the row to set the marker (0-2)
-	 * @param col the column to set the marker (0-2)
+	 * @param row   the row to set the marker (0-2)
+	 * @param col   the column to set the marker (0-2)
 	 * @return true if the move is valid, otherwise false
 	 */
 	private boolean isValidMove(int state, int row, int col) {
@@ -120,19 +120,19 @@ public class TicTacToe {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Calculates all legal moves for a given player
 	 * 
-	 * @param state of which the legal remaining moves will be calculated
+	 * @param state  of which the legal remaining moves will be calculated
 	 * @param player whos moves will be calculated
 	 * @return list of possible states
 	 */
-	public ArrayList<Integer> nextStates(int state, int player){
+	public ArrayList<Integer> nextStates(int state, int player) {
 		ArrayList<Integer> possibleStates = new ArrayList<Integer>();
-		for(int row = 0; row < 3; row++) {
-			for(int col = 0; col < 3; col++) {
-				if(isValidMove(state, row, col)) {
+		for (int row = 0; row < 3; row++) {
+			for (int col = 0; col < 3; col++) {
+				if (isValidMove(state, row, col)) {
 					possibleStates.add(setBit(state, row * 3 + col + player * 9));
 				}
 			}
@@ -141,14 +141,14 @@ public class TicTacToe {
 	}
 
 	/**
-	 * Tries to set the players marker on the specified position. If successful this
-	 * function returns true, otherwise false
+	 * Tries to set the players marker on the specified position. If successful
+	 * returns the new state, otherwise the old state
 	 * 
 	 * @param state  state of the board where the marker should be placed on
 	 * @param player whos marker will be placed
 	 * @param row    the marker will be placed on (0-2)
 	 * @param col    the marker will be placed on (0-2)
-	 * @return true if successful, otherwise false
+	 * @return the state of the game after placing (or not placing) the marker
 	 */
 	public int setMarker(int state, int player, int row, int col) {
 		if (isValidMove(state, row, col)) {
@@ -189,8 +189,8 @@ public class TicTacToe {
 	 * Example: row = 1, col = 1 will return the symbol in the middle
 	 * 
 	 * @param state the symbol will be retrieved from
-	 * @param row the symbol shall be fetched from
-	 * @param col the symbol shall be fetched from
+	 * @param row   the symbol shall be fetched from
+	 * @param col   the symbol shall be fetched from
 	 * @return the symbol at the given position
 	 */
 	private char getSymbol(int state, int row, int col) {
@@ -239,5 +239,9 @@ public class TicTacToe {
 	 */
 	public Status getGameStatus() {
 		return this.gameStatus;
+	}
+
+	public int getField() {
+		return field;
 	}
 }
