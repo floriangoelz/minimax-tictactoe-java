@@ -10,4 +10,8 @@ public class Minimax {
 		Random r = new Random();
 		return new int[] { r.nextInt(3), r.nextInt(3) };
 	}
+	
+	//private int value(int state, int player) {
+		
+	//}
 }

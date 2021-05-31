@@ -1,5 +1,6 @@
 package ticTacToe;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class TicTacToe {
@@ -38,13 +39,13 @@ public class TicTacToe {
 	// -----------------------------------------
 	// Constructors
 	// -----------------------------------------
-	public TicTacToe() {
+	public TicTacToe(int field) {
 		// initialize the game as running
 		gameStatus = Status.RUNNING;
 		// randomly decide who starts the match
 		turn = r.nextBoolean();
 		// draw the empty board
-		drawGame();
+		drawGame(field);
 	}
 
 	// -----------------------------------------
@@ -102,41 +103,62 @@ public class TicTacToe {
 	 * Function to determine whether a given move is valid by checking whether the
 	 * location is inside bounds and not already taken
 	 * 
+	 * @param state the move will be checked
 	 * @param row the row to set the marker (0-2)
 	 * @param col the column to set the marker (0-2)
 	 * @return true if the move is valid, otherwise false
 	 */
-	private boolean isValidMove(int row, int col) {
+	private boolean isValidMove(int state, int row, int col) {
 		if (row < 0 || row > 2 || col < 0 || col > 2) { // out of bounds
 			return false;
 		}
-		if (setBit(this.field, row * 3 + col) == this.field) { // already placed by player 0
+		if (setBit(state, row * 3 + col) == state) { // already placed by player 0
 			return false;
 		}
-		if (setBit(this.field, row * 3 + col + 9) == this.field) { // already placed by player 1
+		if (setBit(state, row * 3 + col + 9) == state) { // already placed by player 1
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Calculates all legal moves for a given player
+	 * 
+	 * @param state of which the legal remaining moves will be calculated
+	 * @param player whos moves will be calculated
+	 * @return list of possible states
+	 */
+	public ArrayList<Integer> nextStates(int state, int player){
+		ArrayList<Integer> possibleStates = new ArrayList<Integer>();
+		for(int row = 0; row < 3; row++) {
+			for(int col = 0; col < 3; col++) {
+				if(isValidMove(state, row, col)) {
+					possibleStates.add(setBit(state, row * 3 + col + player * 9));
+				}
+			}
+		}
+		return possibleStates;
 	}
 
 	/**
 	 * Tries to set the players marker on the specified position. If successful this
 	 * function returns true, otherwise false
 	 * 
+	 * @param state  state of the board where the marker should be placed on
 	 * @param player whos marker will be placed
 	 * @param row    the marker will be placed on (0-2)
 	 * @param col    the marker will be placed on (0-2)
 	 * @return true if successful, otherwise false
 	 */
-	public boolean setMarker(int player, int row, int col) {
-		if (isValidMove(row, col)) {
-			field = setBit(this.field, row * 3 + col + player * 9);
+	public int setMarker(int state, int player, int row, int col) {
+		if (isValidMove(state, row, col)) {
+			field = setBit(state, row * 3 + col + player * 9);
 			turn = !turn; // swap turns
 			gameStatus = currentGameStatus();
-			drawGame();
-			return true;
+			drawGame(field);
+			return field;
 		}
-		return false;
+		return state;
 	}
 
 	/**
@@ -144,7 +166,7 @@ public class TicTacToe {
 	 * 
 	 * @return the status of the game
 	 */
-	private Status currentGameStatus() {
+	public Status currentGameStatus() {
 		int current;
 		for (int i = 0; i < 8; i++) {
 			current = WINNING_STATES[i];
@@ -166,15 +188,16 @@ public class TicTacToe {
 	 * <p>
 	 * Example: row = 1, col = 1 will return the symbol in the middle
 	 * 
+	 * @param state the symbol will be retrieved from
 	 * @param row the symbol shall be fetched from
 	 * @param col the symbol shall be fetched from
 	 * @return the symbol at the given position
 	 */
-	private char getSymbol(int row, int col) {
+	private char getSymbol(int state, int row, int col) {
 		int mask = setBit(0, row * 3 + col);
-		if ((mask & this.field) == mask) {
+		if ((mask & state) == mask) {
 			return symbols[0];
-		} else if ((mask & (this.field >> 9)) == mask) {
+		} else if ((mask & (state >> 9)) == mask) {
 			return symbols[1];
 		}
 		return symbols[2];
@@ -182,13 +205,15 @@ public class TicTacToe {
 
 	/**
 	 * Draws the current state of the game to the console window
+	 * 
+	 * @param state that will be drawn
 	 */
-	private void drawGame() {
+	private void drawGame(int state) {
 		final String HORIZONTAL = "\n-----------------\n  ";
 		String print = "\n  ";
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				print += getSymbol(i, j);
+				print += getSymbol(state, i, j);
 				if (j != 2)
 					print += "  |  ";
 			}

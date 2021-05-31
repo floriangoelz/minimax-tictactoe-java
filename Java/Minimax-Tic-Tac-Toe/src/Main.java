@@ -9,6 +9,8 @@ public class Main {
 	private Scanner sc;
 	private TicTacToe game;
 	private Minimax minimax;
+	
+	private int state = 0;
 
 	public static void main(String[] args) {
 		new Main().run();
@@ -24,7 +26,7 @@ public class Main {
 
 		boolean running = true;
 		while (running) {
-			game = new TicTacToe();
+			game = new TicTacToe(state);
 			do {
 				nextMove();
 			} while (game.getGameStatus() == TicTacToe.Status.RUNNING);
@@ -54,16 +56,19 @@ public class Main {
 			boolean validTurn = false;
 			do {
 				move = turnInput();
-				validTurn = game.setMarker(0, move[0], move[1]);
-				if (!validTurn)
-					System.out.println("Invalid move.");
+				state = game.setMarker(state, 0, move[0], move[1]);
+				//if (!validTurn)
+				//	System.out.println("Invalid move.");
 			} while (!validTurn);
 		} else {
 			// Computer (X) turn -> Minimax
 			System.out.println("The computer is planning its next move...");
+			int nextState;
 			do { // loop not needed when minimax doesn't do wrong turns
 				move = minimax.getTurn();
-			} while (!game.setMarker(1, move[0], move[1]));
+				nextState = game.setMarker(state, 1, move[0], move[1]);
+			} while (state == nextState);
+			state = nextState;
 		}
 	}
 
