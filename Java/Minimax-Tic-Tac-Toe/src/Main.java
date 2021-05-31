@@ -9,8 +9,6 @@ public class Main {
 	private Scanner sc;
 	private TicTacToe game;
 	private Minimax minimax;
-	
-	private int state = 0;
 
 	public static void main(String[] args) {
 		new Main().run();
@@ -26,7 +24,7 @@ public class Main {
 
 		boolean running = true;
 		while (running) {
-			game = new TicTacToe(state);
+			game = new TicTacToe(0);
 			do {
 				nextMove();
 			} while (game.getGameStatus() == TicTacToe.Status.RUNNING);
@@ -50,20 +48,25 @@ public class Main {
 	 * Getting and processing the next move of a player
 	 */
 	private void nextMove() {
+		int state = game.getField();
 		int[] move;
+		int nextState;
 		if (game.getTurn()) {
-			// Player (O) turn
+			// Players (O) turn
 			boolean validTurn = false;
 			do {
 				move = turnInput();
-				state = game.setMarker(state, 0, move[0], move[1]);
-				//if (!validTurn)
-				//	System.out.println("Invalid move.");
+				nextState = game.setMarker(state, 0, move[0], move[1]);
+				if (nextState != state) {
+					validTurn = true;
+				} else {
+					System.out.println("Invalid move.");
+				}
 			} while (!validTurn);
+			state = nextState;
 		} else {
-			// Computer (X) turn -> Minimax
+			// Computers (X) turn -> Minimax
 			System.out.println("The computer is planning its next move...");
-			int nextState;
 			do { // loop not needed when minimax doesn't do wrong turns
 				move = minimax.getTurn();
 				nextState = game.setMarker(state, 1, move[0], move[1]);
@@ -76,7 +79,7 @@ public class Main {
 	 * Gets the input of the turn the player wants to make and repeats it until the
 	 * input is valid
 	 * 
-	 * @return
+	 * @return the turn as an array with [row, col]
 	 */
 	private int[] turnInput() {
 		boolean valid = false;
