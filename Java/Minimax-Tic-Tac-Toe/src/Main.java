@@ -19,7 +19,7 @@ public class Main {
 			game = new TicTacToe();
 			do {
 				if (game.getTurn()) {
-					// Player (X) turn
+					// Player (O) turn
 					do {
 						System.out.print("Type your turn in the format \"row,col\": ");
 						String turn = sc.next();
@@ -31,7 +31,7 @@ public class Main {
 							System.out.println("Invalid number.");
 							validTurn = false;
 						}
-						if (game.doMove(0, row, col)) {
+						if (game.setMarker(0, row, col)) {
 							validTurn = true;
 						} else {
 							System.out.println("Invalid move.");
@@ -39,11 +39,11 @@ public class Main {
 						}
 					} while (!validTurn);
 				} else {
-					// Computer (O) turn -> Minimax
+					// Computer (X) turn -> Minimax
 					System.out.println("The computer is planning its next move...");
 					do { // loop not needed when minimax doesn't do wrong turns
 						move = minimax.getTurn();
-					} while (!game.doMove(1, move[0], move[1]));
+					} while (!game.setMarker(1, move[0], move[1]));
 				}
 			} while (game.getGameStatus() == TicTacToe.Status.RUNNING);
 			switch (game.getGameStatus()) {
