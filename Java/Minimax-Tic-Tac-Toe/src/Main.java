@@ -11,6 +11,8 @@ public class Main {
 	private Minimax minimax;
 	int currentPlayer;
 
+	static Runtime runtime = Runtime.getRuntime();
+
 	public static void main(String[] args) {
 		new Main().run();
 	}
@@ -22,10 +24,10 @@ public class Main {
 		// initialize Scanner for inputs
 		sc = new Scanner(System.in);
 		minimax = new Minimax();
-
 		boolean running = true;
 		while (running) {
 			game = new TicTacToe(0);
+			checkRamUsage();
 			do {
 				nextMove();
 			} while (game.getGameStatus() == TicTacToe.Status.RUNNING);
@@ -36,6 +38,14 @@ public class Main {
 		System.out.println("End of program");
 	}
 
+	private void checkRamUsage() {
+		long memory = runtime.freeMemory();
+		long time = System.currentTimeMillis();
+		minimax.value(0, 0, game);
+		System.out.println("Memory: " + (memory - runtime.freeMemory()) / 1024 + " KB");
+		System.out.println("Time: " + (System.currentTimeMillis() - time) + " ms");
+	}
+
 	/**
 	 * Gets a user input and converts it to lower case
 	 * 
@@ -44,11 +54,11 @@ public class Main {
 	private String getUserInput() {
 		return sc.next().toLowerCase();
 	}
-	
+
 	public int other(int player) {
-		if(player == 0) {
+		if (player == 0) {
 			return 1;
-		}else {
+		} else {
 			return 0;
 		}
 	}
