@@ -27,7 +27,7 @@ public class Main {
 		boolean running = true;
 		while (running) {
 			game = new TicTacToe(0);
-			checkRamUsage();
+			checkPerformance();
 			do {
 				nextMove();
 			} while (game.getGameStatus() == TicTacToe.Status.RUNNING);
@@ -38,7 +38,7 @@ public class Main {
 		System.out.println("End of program");
 	}
 
-	private void checkRamUsage() {
+	private void checkPerformance() {
 		long memory = runtime.freeMemory();
 		long time = System.currentTimeMillis();
 		minimax.value(0, 0, game);
