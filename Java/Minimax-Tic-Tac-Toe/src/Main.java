@@ -9,6 +9,7 @@ public class Main {
 	private Scanner sc;
 	private TicTacToe game;
 	private Minimax minimax;
+	int currentPlayer;
 
 	public static void main(String[] args) {
 		new Main().run();
@@ -43,6 +44,14 @@ public class Main {
 	private String getUserInput() {
 		return sc.next().toLowerCase();
 	}
+	
+	public int other(int player) {
+		if(player == 0) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
 
 	/**
 	 * Getting and processing the next move of a player
@@ -51,7 +60,7 @@ public class Main {
 		int state = game.getField();
 		int[] move;
 		int nextState;
-		if (game.getTurn()) {
+		if (currentPlayer == 0) {
 			// Players (O) turn
 			boolean validTurn = false;
 			do {
@@ -64,14 +73,14 @@ public class Main {
 				}
 			} while (!validTurn);
 			state = nextState;
+			currentPlayer = other(currentPlayer);
 		} else {
 			// Computers (X) turn -> Minimax
 			System.out.println("The computer is planning its next move...");
-			do { // loop not needed when minimax doesn't do wrong turns
-				move = minimax.getTurn();
-				nextState = game.setMarker(state, 1, move[0], move[1]);
-			} while (state == nextState);
-			state = nextState;
+			game.setField(minimax.getTurn(state, 1, game));
+			state = game.getField();
+			game.drawGame(state);
+			currentPlayer = other(currentPlayer);
 		}
 	}
 

@@ -182,6 +182,42 @@ public class TicTacToe {
 		}
 		return Status.DRAW; // full field and draw
 	}
+	
+	/**
+	 * Calculates the current situation of a given state and player
+	 * <p>
+	 * Example: if the given board is not full and nobody has won the game yet the function returns 2
+	 * 
+	 * @param state of the board
+	 * @param player whose situation value shall be calculated
+	 * @return situation of the given state and player
+	 */
+	public int utility(int state, int player) {
+		int current;
+		for (int i = 0; i < 8; i++) {
+			current = WINNING_STATES[i];
+			if ((state & current) == current) {
+				return 1 - 2 * player; // player X has won
+			}
+			if (((state >> 9) & current) == current) {
+				return -1 + 2 * player; // player O has won
+			}
+		}
+		if (((state & 511) | (state >> 9)) != 511) { // board isn't full
+			return 2;
+		}
+		return 0; // full field and draw
+	}
+	
+	/**
+	 * calculates if the game in a given state is finished
+	 * 
+	 * @param state of the game
+	 * @return boolean value if the game is over
+	 */
+	public boolean finished(int state) {
+		return utility(state, 0) != 2;
+	}
 
 	/**
 	 * Gets the symbol at the given position of the field
@@ -208,7 +244,7 @@ public class TicTacToe {
 	 * 
 	 * @param state that will be drawn
 	 */
-	private void drawGame(int state) {
+	public void drawGame(int state) {
 		final String HORIZONTAL = "\n-----------------\n  ";
 		String print = "\n  ";
 		for (int i = 0; i < 3; i++) {
@@ -240,8 +276,21 @@ public class TicTacToe {
 	public Status getGameStatus() {
 		return this.gameStatus;
 	}
-
+	
+	/**
+	 * Returns current state of the game
+	 * 
+	 * @return field of the game
+	 */
 	public int getField() {
 		return field;
+	}
+	
+	/**
+	 * sets the field of the game to a given state
+	 * @param field
+	 */
+	public void setField(int state) {
+		this.field = state;
 	}
 }
