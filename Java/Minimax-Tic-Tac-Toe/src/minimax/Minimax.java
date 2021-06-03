@@ -42,7 +42,7 @@ public class Minimax {
 	 * Example: the return value for the following board state is 1 because there's at least one possible turn that leads to victory
 	 *    O  |  O  |   
 	 *  -----------------
-	 *	  X  |     |   
+	 *	  X  |     |         --> e. g
 	 *  -----------------
 	 *	     |  X  |   
 	 * 
