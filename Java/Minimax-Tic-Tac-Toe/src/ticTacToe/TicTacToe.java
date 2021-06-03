@@ -31,21 +31,21 @@ public class TicTacToe {
 	private int field = 0;
 	// the possible symbols that can be on the board
 	private char[] symbols = new char[] { 'O', 'X', ' ' };
-	// true if its player 0 (O)s turn, false for player 1 (X)
-	private boolean turn;
+	// 0 if its player 0 (O)s turn, 1 for player 1 (X)
+	private int turn;
 	// holds the current Status of the game (e.g DRAW)
 	private Status gameStatus;
 
 	// -----------------------------------------
 	// Constructors
 	// -----------------------------------------
-	public TicTacToe(int field) {
+	public TicTacToe() {
 		// initialize the game as running
 		gameStatus = Status.RUNNING;
 		// randomly decide who starts the match
-		turn = r.nextBoolean();
+		turn = r.nextInt(2);
 		// draw the empty board
-		drawGame(field);
+		drawGame();
 	}
 
 	// -----------------------------------------
@@ -95,9 +95,34 @@ public class TicTacToe {
 		return state;
 	}
 
-	// -----------------------------------------
-	// Instance-Methods
-	// -----------------------------------------
+	/**
+	 * calculates if a game in a given state is finished
+	 * 
+	 * @param state of the game
+	 * @return boolean value if the game is over
+	 */
+	public static boolean finished(int state) {
+		return utility(state, 0) != 2;
+	}
+
+	/**
+	 * Calculates all legal moves in from a state for a given player
+	 * 
+	 * @param state  of which the legal remaining moves will be calculated
+	 * @param player whos moves will be calculated
+	 * @return list of possible states
+	 */
+	public static ArrayList<Integer> nextStates(int state, int player) {
+		ArrayList<Integer> possibleStates = new ArrayList<Integer>();
+		for (int row = 0; row < 3; row++) {
+			for (int col = 0; col < 3; col++) {
+				if (isValidMove(state, row, col)) {
+					possibleStates.add(setBit(state, row * 3 + col + player * 9));
+				}
+			}
+		}
+		return possibleStates;
+	}
 
 	/**
 	 * Function to determine whether a given move is valid by checking whether the
@@ -108,7 +133,7 @@ public class TicTacToe {
 	 * @param col   the column to set the marker (0-2)
 	 * @return true if the move is valid, otherwise false
 	 */
-	private boolean isValidMove(int state, int row, int col) {
+	private static boolean isValidMove(int state, int row, int col) {
 		if (row < 0 || row > 2 || col < 0 || col > 2) { // out of bounds
 			return false;
 		}
@@ -122,22 +147,48 @@ public class TicTacToe {
 	}
 
 	/**
-	 * Calculates all legal moves for a given player
+	 * Calculates the current situation of a given state and player
 	 * 
-	 * @param state  of which the legal remaining moves will be calculated
-	 * @param player whos moves will be calculated
-	 * @return list of possible states
+	 * <pre>
+	 * Example: if the given player is 0
+	 * - Returns 1 if player 0 won the game
+	 * - Returns -1 if player 0 lost the game
+	 * - Returns 2 if the game hasn't ended yet
+	 * - Returns 0 if the game ended in a draw
+	 * </pre>
+	 * 
+	 * Same rules apply for given player 1
+	 * 
+	 * @param state  of the board
+	 * @param player whose situation value shall be calculated
+	 * @return situation of the given state and player
 	 */
-	public ArrayList<Integer> nextStates(int state, int player) {
-		ArrayList<Integer> possibleStates = new ArrayList<Integer>();
-		for (int row = 0; row < 3; row++) {
-			for (int col = 0; col < 3; col++) {
-				if (isValidMove(state, row, col)) {
-					possibleStates.add(setBit(state, row * 3 + col + player * 9));
-				}
+	public static int utility(int state, int player) {
+		int current;
+		for (int i = 0; i < 8; i++) {
+			current = WINNING_STATES[i];
+			if ((state & current) == current) {
+				return 1 - 2 * player; // player has won
+			}
+			if (((state >> 9) & current) == current) {
+				return -1 + 2 * player; // player has lost
 			}
 		}
-		return possibleStates;
+		if (((state & 511) | (state >> 9)) != 511) { // board isn't full
+			return 2;
+		}
+		return 0; // full field and draw
+	}
+
+	// -----------------------------------------
+	// Instance-Methods
+	// -----------------------------------------
+
+	/**
+	 * Swaps the turns of players. E.g. if the turn is 0, sets it to 1
+	 */
+	private void swapTurns() {
+		this.turn = this.turn == 0 ? 1 : 0;
 	}
 
 	/**
@@ -150,15 +201,26 @@ public class TicTacToe {
 	 * @param col    the marker will be placed on (0-2)
 	 * @return the state of the game after placing (or not placing) the marker
 	 */
-	public int setMarker(int state, int player, int row, int col) {
-		if (isValidMove(state, row, col)) {
-			field = setBit(state, row * 3 + col + player * 9);
-			turn = !turn; // swap turns
-			gameStatus = currentGameStatus();
-			drawGame(field);
-			return field;
-		}
-		return state;
+	public boolean setMarker(int state, int player, int row, int col) {
+		if (!isValidMove(state, row, col))
+			return false;
+		field = setBit(state, row * 3 + col + player * 9);
+		swapTurns();
+		return true;
+	}
+
+	/**
+	 * sets the field of the game to a given state and swaps turns
+	 * <p>
+	 * Notice: This function does not check whether the new newState is viable
+	 * 
+	 * @param newState that shall be set as a field
+	 */
+	public void setMarkerState(int newState) {
+		this.field = newState;
+		swapTurns();
+		gameStatus = currentGameStatus();
+		drawGame();
 	}
 
 	/**
@@ -181,42 +243,6 @@ public class TicTacToe {
 			return Status.RUNNING;
 		}
 		return Status.DRAW; // full field and draw
-	}
-	
-	/**
-	 * Calculates the current situation of a given state and player
-	 * <p>
-	 * Example: if the given board is not full and nobody has won the game yet the function returns 2
-	 * 
-	 * @param state of the board
-	 * @param player whose situation value shall be calculated
-	 * @return situation of the given state and player
-	 */
-	public int utility(int state, int player) {
-		int current;
-		for (int i = 0; i < 8; i++) {
-			current = WINNING_STATES[i];
-			if ((state & current) == current) {
-				return 1 - 2 * player; // player X has won
-			}
-			if (((state >> 9) & current) == current) {
-				return -1 + 2 * player; // player O has won
-			}
-		}
-		if (((state & 511) | (state >> 9)) != 511) { // board isn't full
-			return 2;
-		}
-		return 0; // full field and draw
-	}
-	
-	/**
-	 * calculates if the game in a given state is finished
-	 * 
-	 * @param state of the game
-	 * @return boolean value if the game is over
-	 */
-	public boolean finished(int state) {
-		return utility(state, 0) != 2;
 	}
 
 	/**
@@ -244,12 +270,12 @@ public class TicTacToe {
 	 * 
 	 * @param state that will be drawn
 	 */
-	public void drawGame(int state) {
+	public void drawGame() {
 		final String HORIZONTAL = "\n-----------------\n  ";
 		String print = "\n  ";
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				print += getSymbol(state, i, j);
+				print += getSymbol(this.field, i, j);
 				if (j != 2)
 					print += "  |  ";
 			}
@@ -264,7 +290,7 @@ public class TicTacToe {
 	 * 
 	 * @return true if it's player 0s turn, otherwise false
 	 */
-	public boolean getTurn() {
+	public int getTurn() {
 		return this.turn;
 	}
 
@@ -276,7 +302,7 @@ public class TicTacToe {
 	public Status getGameStatus() {
 		return this.gameStatus;
 	}
-	
+
 	/**
 	 * Returns current state of the game
 	 * 
@@ -284,13 +310,5 @@ public class TicTacToe {
 	 */
 	public int getField() {
 		return field;
-	}
-	
-	/**
-	 * sets the field of the game to a given state
-	 * @param field
-	 */
-	public void setField(int state) {
-		this.field = state;
 	}
 }
