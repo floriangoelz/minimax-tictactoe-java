@@ -91,6 +91,7 @@ public class Minimax {
 			if (currentVal == bestVal) {
 				bestMoves.add(currentState);
 			}
+			cache.clear(); // clear the cache for next state
 		}
 		int bestState = bestMoves.get(r.nextInt(bestMoves.size()));
 		int[] returnValue = { bestState, bestVal };

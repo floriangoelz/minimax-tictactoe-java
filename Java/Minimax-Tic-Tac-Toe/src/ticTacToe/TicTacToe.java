@@ -106,14 +106,14 @@ public class TicTacToe {
 	}
 
 	/**
-	 * Calculates all legal moves in from a state for a given player
+	 * Calculates all legal moves from a state for a given player
 	 * 
 	 * @param state  of which the legal remaining moves will be calculated
 	 * @param player whos moves will be calculated
 	 * @return list of possible states
 	 */
 	public static ArrayList<Integer> nextStates(int state, int player) {
-		ArrayList<Integer> possibleStates = new ArrayList<Integer>();
+		ArrayList<Integer> possibleStates = new ArrayList<>();
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 3; col++) {
 				if (isValidMove(state, row, col)) {
@@ -206,6 +206,7 @@ public class TicTacToe {
 			return false;
 		field = setBit(state, row * 3 + col + player * 9);
 		swapTurns();
+		drawGame();
 		return true;
 	}
 
