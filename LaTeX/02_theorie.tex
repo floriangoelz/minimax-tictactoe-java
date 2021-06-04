@@ -35,13 +35,47 @@ Algorithmus baut dabei auf der Funktion \code{value} auf, die wie folgt definier
 
 \[value: States \times Players \rightarrow \{-1,0,1\}\]
 
-Die Rückgabewert symbolisieren dabei den bestmöglichen Ausgang eines Zuges:
+Die Rückgabewert symbolisieren dabei den worst case Ausgang eines Zuges:
 
 \begin{itemize}
-    \item -1 bedeutet, dass der Spieler keine Möglichkeit mehr hat eine Niederlage zu verhindern
-    \item 0 bedeutet, dass im besten Fall ein Unentschieden erzielt werden kann
-    \item 1 bedeutet, dass ein Sieg möglich ist
+    \item -1 bedeutet, dass der Spieler bei diesem Spielzug im schlechtesten Fall verliert
+    \item 0 bedeutet, dass im schlechtesten Fall ein Unentschieden erzielt werden kann
+    \item 1 bedeutet, dass mit der Wahl dieses Spielzuges ein Sieg erzielt wird
 \end{itemize}
 
-Die Funktion bekommt also einen Zustand des Spielbretts und den Spieler für den der Wert berechnet werden soll.
-Um den Rückgabewert zu berechnen, werden sämtliche mögliche Spielverläufe berechnet und 
+Die Funktion berechnet alle möglichen Folgezüge für das übergebene Spielfeld. Sobald eine Spielsituation 
+erreicht wurde, bei der das Spiel entweder von einem Spieler gewonnen wurde oder keine weiteren Spielsteine 
+mehr gesetzt werden können, wird die Funktion \code{utility} aufgerufen. Diese vergleicht den Spielzustand 
+mit allen möglichen Endzuständen und gibt gegebenenfall den Gewinner oder Unentschieden zurück. Da der Spieler 
+nach jedem Zug wechselt wird immer abwechselnd der höchste Wert bzw. der niedrigste Wert für den nächsten Zug gewählt.
+
+Betrachten wir dies an einem Beispiel:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{img/minimax_step_0.png}
+    \caption[Beispiel für die Auswahl eines Zuges mit dem Minimax-Algorithmus]{Beispiel für die Auswahl eines Zuges mit dem Minimax-Algorithmus \\ (eigene Anfertigung)}
+\end{figure}
+
+In diesem Fall gibt es zwei mögliche nächste Züge. Wichtig ist, dass nach jedem Zug der Spieler wechselt und der Algorithmus 
+immer davon ausgehen muss, dass der Gegner den Zug mit dem höchsten Wert für ihn, also dem niedrigsten Wert für die KI wählt. 
+Für das Beispiel heißt das, dass wenn der Gegner am Zug ist (schwarze Knoten), er den niedrigsten Wert, hier also -1 wählt. 
+Das gleiche gilt für den zweiten schwarzen Knoten, wo der Wert 0 ausgewählt wird.
+
+Im nächsten Schritt ist die KI wieder am Zug, also wird diesmal der maximale Wert der möglichen Züge bestimmt. Konkret heißt das, 
+dass wenn der rechte Zug gewählt wird, im schlechtesten Fall ein Unentschieden und beim linken Zug eine Niederlage erzielt werden kann. 
+Um die Niederlage abzuwenden wird der rechte Zug und damit der höhere Wert gewählt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.25]{img/minimax_step_1.png}
+    \caption[Auswahl des finalen Spielzuges]{Auswahl des finalen Spielzuges (eigene Anfertigung)}
+\end{figure}
+
+Anzumerken ist, dass bei jedem Aufruf der Funktion \code{value} alle weiteren möglichen Spielzüge berechnet werden. 
+Beim Spiel Tic-Tac-Toe kann es vorkommen, dass mehrere unterschiedliche Spielverläufe im selben Zustand enden. 
+Für die Funktion \code{value} heißt das, dass sie mehrfach mit den selben Parametern aufgerufen wird und dadurch 
+Rechenleistung verschwendet wird. Um redundante Funktionsaufrufe zu vermeiden wird das Prinzip der Memoisierung 
+verwendet. D. h. es wird z. B. ein Dictionary verwendet, um bereits berechnete Ergebnisse zu speichern. Wird nun 
+die Funktion \code{value} aufgerufen, wird erst geprüft, ob für die Parameter bereits ein Eintrag im Dictionary 
+vorhanden ist. Ist dies der Fall wird dieser Wert zurückgegeben und es findet keine Berechnung statt. Ist dem nicht 
+so, wird ein neuer Eintrag im Dictionary angelegt.
