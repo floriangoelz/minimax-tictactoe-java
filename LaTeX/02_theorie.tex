@@ -29,19 +29,19 @@ Ende ist das komplette Spielfeld ausgefüllt und es ergeben sich keine drei Symb
 Entsprechend ist die Runde unentschieden ausgegangen.
 
 \section{Der Minimax-Algorithmus}
+Nachdem das Spiel Tic-Tac-Toe erklärt wurde, soll nun mit Hilfe des Minimax Algorithmus eine künstliche Intelligenz 
+entwickelt werden, die in einem Spiel gegen einen menschlichen Spieler immer einen optimalen Zug ausführt. Der Minimax 
+Algorithmus baut dabei auf der Funktion \code{value} auf, die wie folgt definiert ist:
 
-Der Minimax-Algorithmus, ist ein Algorithmus, der für ein gegebenes Spiel eine Spielstrategie ermittelt. 
-Das Spiel muss dabei ein Zwei-Personen-Nullsummenspiel mit perfekter Information sein. Die Idee ist, mögliche 
-Spielverläufe zu bewerten und damit für einen gegebenen Spielzustand den Zug zu wählen, der zum besten Spielzustand 
-für den zugewiesenen Spieler führt. Als Basis für diese Entscheidung dient eine Funktion utility. Diese Funktion 
-nimmt den aktuellen Spielstand und überprüft, in welchem Zustand sich die übergebene Spielsituation befindet. 
+\[value: States \times Players \rightarrow \{-1,0,1\}\]
+
+Die Rückgabewert symbolisieren dabei den bestmöglichen Ausgang eines Zuges:
 
 \begin{itemize}
-    \item Kann im besten Fall ein Sieg erzielt werden, wird der Wert 1 zurückgegeben
-    \item Ist nur ein Unentschieden möglich, wird der Wert 0 zurückgegeben
-    \item Ist eine Niederlage nicht zu abzuwenden, wird der Wert -1 zurückgegeben
+    \item -1 bedeutet, dass der Spieler keine Möglichkeit mehr hat eine Niederlage zu verhindern
+    \item 0 bedeutet, dass im besten Fall ein Unentschieden erzielt werden kann
+    \item 1 bedeutet, dass ein Sieg möglich ist
 \end{itemize}
 
-Um dies zu ermitteln, wird ein Baum mit allen möglichen Spielverläufen berechnet. Die utility Funktion überprüft 
-nun rekursiv für jeden potentiellen Spielzustand, ob das Spiel beendet wurde. Ist dies der Fall, ist das 
-Ende des Baumes erreicht und 
+Die Funktion bekommt also einen Zustand des Spielbretts und den Spieler für den der Wert berechnet werden soll.
+Um den Rückgabewert zu berechnen, werden sämtliche mögliche Spielverläufe berechnet und 
