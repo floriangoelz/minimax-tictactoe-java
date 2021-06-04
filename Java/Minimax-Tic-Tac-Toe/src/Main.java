@@ -5,12 +5,15 @@ import ticTacToe.TicTacToe;
 
 public class Main {
 
+	// Runtime object for memory calculation
+	static Runtime runtime = Runtime.getRuntime();
+
 	// Scanner for inputs
 	private Scanner sc;
+	// Instance of the game
 	private TicTacToe game;
+	// Instance of the algorithm
 	private Minimax minimax;
-
-	static Runtime runtime = Runtime.getRuntime();
 
 	public static void main(String[] args) {
 		new Main().run();
@@ -21,16 +24,15 @@ public class Main {
 	 */
 	private void run() {
 		minimax = new Minimax(); // initialize minimax algorithm
-		checkPerformance(); // and test its performance
+		checkPerformance(); // and test its performance for comparison
 
 		// initialize Scanner for inputs
 		sc = new Scanner(System.in);
 		boolean running = true;
 		while (running) {
 			game = new TicTacToe();
-			do {
+			while (game.getGameStatus() == TicTacToe.Status.RUNNING)
 				nextMove();
-			} while (game.getGameStatus() == TicTacToe.Status.RUNNING);
 			gameEnded();
 			running = anotherGameInput();
 		}
@@ -38,6 +40,11 @@ public class Main {
 		System.out.println("End of program");
 	}
 
+	/**
+	 * Function to print the estimated memory usage of the minimax value(state,
+	 * player) function as well as the time needed to execute it (worst case, empty
+	 * field)
+	 */
 	private void checkPerformance() {
 		long memory = runtime.freeMemory();
 		long time = System.currentTimeMillis();
@@ -59,31 +66,30 @@ public class Main {
 	 * Getting and processing the next move of a player
 	 */
 	private void nextMove() {
-		int state = game.getField();
 		if (game.getTurn() == 0) {
 			// Players (O) turn
 			int[] move;
-			boolean validTurn = false;
+			boolean validMove = false;
 			do {
-				move = turnInput();
-				validTurn = game.setMarker(state, 0, move[0], move[1]);
-				if (!validTurn)
+				move = moveInput();
+				validMove = game.setMarker(0, move[0], move[1]);
+				if (!validMove)
 					System.out.println("Invalid move.");
-			} while (!validTurn);
+			} while (!validMove);
 		} else {
 			// Computers (X) turn -> Minimax
 			System.out.println("The computer is planning its next move...");
-			game.setMarkerState(minimax.getTurn(state, 1));
+			game.setMarkerState(minimax.getMove(game.getField(), 1));
 		}
 	}
 
 	/**
-	 * Gets the input of the turn the player wants to make and repeats it until the
+	 * Gets the input of the move the player wants to make and repeats it until the
 	 * input is valid
 	 * 
-	 * @return the turn as an array with [row, col]
+	 * @return the move as an array with [row, col]
 	 */
-	private int[] turnInput() {
+	private int[] moveInput() {
 		boolean valid = false;
 		int[] move = new int[2];
 		String turn;
@@ -97,7 +103,7 @@ public class Main {
 				move[1] = Integer.parseInt(turnSplit[1]);
 				valid = true;
 			} catch (NumberFormatException | IndexOutOfBoundsException e) {
-				System.out.println("Invalid number.");
+				System.out.println("Invalid input.");
 			}
 		} while (!valid);
 		return move;
@@ -108,10 +114,10 @@ public class Main {
 	 */
 	private void gameEnded() {
 		switch (game.getGameStatus()) {
-		case PLAYER_X_WON:
+		case PLAYER_O_WON:
 			System.out.println("Congratulations. You beat the algorithm");
 			break;
-		case PLAYER_O_WON:
+		case PLAYER_X_WON:
 			System.out.println("You lost against the computer");
 			break;
 		case DRAW:

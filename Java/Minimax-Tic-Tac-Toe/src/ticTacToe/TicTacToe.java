@@ -9,16 +9,16 @@ public class TicTacToe {
 	// Variables with static context
 	// -----------------------------------------
 
-	// all states a player wins the game with
+	// All states a player wins the game with
 	private static final int[] WINNING_STATES = new int[8];
-	// the random instance to determine who starts the game
+	// The random instance to determine who starts the game
 	private static Random r = new Random();
-	// initialize winning states static (for all future games)
+	// Initialize winning states static (for all future games)
 	static {
 		initializeWinningStates();
 	}
 
-	// enum for all possible game states
+	// Enum for all possible game states
 	public enum Status {
 		RUNNING, PLAYER_X_WON, PLAYER_O_WON, DRAW
 	}
@@ -27,24 +27,24 @@ public class TicTacToe {
 	// Instance variables
 	// -----------------------------------------
 
-	// the current state of the game as a bitmask
+	// The current state of the game as a bitmask
 	private int field = 0;
-	// the possible symbols that can be on the board
+	// The possible symbols that can be on the board
 	private char[] symbols = new char[] { 'O', 'X', ' ' };
 	// 0 if its player 0 (O)s turn, 1 for player 1 (X)
 	private int turn;
-	// holds the current Status of the game (e.g DRAW)
+	// Holds the current Status of the game (e.g DRAW)
 	private Status gameStatus;
 
 	// -----------------------------------------
 	// Constructors
 	// -----------------------------------------
 	public TicTacToe() {
-		// initialize the game as running
+		// Initialize the game as running
 		gameStatus = Status.RUNNING;
-		// randomly decide who starts the match
+		// Randomly decide who starts the match
 		turn = r.nextInt(2);
-		// draw the empty board
+		// Draw the empty board
 		drawGame();
 	}
 
@@ -89,14 +89,13 @@ public class TicTacToe {
 	 */
 	private static int setBits(int[] array) {
 		int state = 0;
-		for (int i = 0; i < array.length; i++) {
+		for (int i = 0; i < array.length; i++)
 			state = setBit(state, array[i]);
-		}
 		return state;
 	}
 
 	/**
-	 * calculates if a game in a given state is finished
+	 * Calculates if a game is finished at a given state
 	 * 
 	 * @param state of the game
 	 * @return boolean value if the game is over
@@ -109,24 +108,23 @@ public class TicTacToe {
 	 * Calculates all legal moves from a state for a given player
 	 * 
 	 * @param state  of which the legal remaining moves will be calculated
-	 * @param player whos moves will be calculated
+	 * @param player the moves will be calculated for
 	 * @return list of possible states
 	 */
 	public static ArrayList<Integer> nextStates(int state, int player) {
 		ArrayList<Integer> possibleStates = new ArrayList<>();
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 3; col++) {
-				if (isValidMove(state, row, col)) {
+				if (isValidMove(state, row, col))
 					possibleStates.add(setBit(state, row * 3 + col + player * 9));
-				}
 			}
 		}
 		return possibleStates;
 	}
 
 	/**
-	 * Function to determine whether a given move is valid by checking whether the
-	 * location is inside bounds and not already taken
+	 * Determines whether a given move is valid by checking whether the location is
+	 * inside bounds and not already taken
 	 * 
 	 * @param state the move will be checked
 	 * @param row   the row to set the marker (0-2)
@@ -134,15 +132,12 @@ public class TicTacToe {
 	 * @return true if the move is valid, otherwise false
 	 */
 	private static boolean isValidMove(int state, int row, int col) {
-		if (row < 0 || row > 2 || col < 0 || col > 2) { // out of bounds
+		if (setBit(state, row * 3 + col) == state) // already placed by player 0
 			return false;
-		}
-		if (setBit(state, row * 3 + col) == state) { // already placed by player 0
+		if (setBit(state, row * 3 + col + 9) == state) // already placed by player 1
 			return false;
-		}
-		if (setBit(state, row * 3 + col + 9) == state) { // already placed by player 1
+		if (row < 0 || row > 2 || col < 0 || col > 2) // out of bounds
 			return false;
-		}
 		return true;
 	}
 
@@ -167,17 +162,14 @@ public class TicTacToe {
 		int current;
 		for (int i = 0; i < 8; i++) {
 			current = WINNING_STATES[i];
-			if ((state & current) == current) {
+			if ((state & current) == current)
 				return 1 - 2 * player; // player has won
-			}
-			if (((state >> 9) & current) == current) {
+			if (((state >> 9) & current) == current)
 				return -1 + 2 * player; // player has lost
-			}
 		}
-		if (((state & 511) | (state >> 9)) != 511) { // board isn't full
+		if (((state & 511) | (state >> 9)) != 511) // board isn't full
 			return 2;
-		}
-		return 0; // full field and draw
+		return 0; // full board (draw)
 	}
 
 	// -----------------------------------------
@@ -185,10 +177,12 @@ public class TicTacToe {
 	// -----------------------------------------
 
 	/**
-	 * Swaps the turns of players. E.g. if the turn is 0, sets it to 1
+	 * Swaps the turns of players, draws the field and updates the games status
 	 */
 	private void swapTurns() {
 		this.turn = this.turn == 0 ? 1 : 0;
+		gameStatus = currentGameStatus();
+		drawGame();
 	}
 
 	/**
@@ -201,27 +195,24 @@ public class TicTacToe {
 	 * @param col    the marker will be placed on (0-2)
 	 * @return the state of the game after placing (or not placing) the marker
 	 */
-	public boolean setMarker(int state, int player, int row, int col) {
-		if (!isValidMove(state, row, col))
+	public boolean setMarker(int player, int row, int col) {
+		if (!isValidMove(this.field, row, col))
 			return false;
-		field = setBit(state, row * 3 + col + player * 9);
+		field = setBit(this.field, row * 3 + col + player * 9);
 		swapTurns();
-		drawGame();
 		return true;
 	}
 
 	/**
 	 * sets the field of the game to a given state and swaps turns
 	 * <p>
-	 * Notice: This function does not check whether the new newState is viable
+	 * Notice: This function does not check whether the new newState is legal
 	 * 
 	 * @param newState that shall be set as a field
 	 */
 	public void setMarkerState(int newState) {
 		this.field = newState;
 		swapTurns();
-		gameStatus = currentGameStatus();
-		drawGame();
 	}
 
 	/**
@@ -233,16 +224,13 @@ public class TicTacToe {
 		int current;
 		for (int i = 0; i < 8; i++) {
 			current = WINNING_STATES[i];
-			if ((field & current) == current) {
-				return Status.PLAYER_X_WON; // player X has won
-			}
-			if (((field >> 9) & current) == current) {
+			if ((field & current) == current)
 				return Status.PLAYER_O_WON; // player O has won
-			}
+			if (((field >> 9) & current) == current)
+				return Status.PLAYER_X_WON; // player X has won
 		}
-		if (((field & 511) | (field >> 9)) != 511) { // board isn't full
+		if (((field & 511) | (field >> 9)) != 511) // board isn't full
 			return Status.RUNNING;
-		}
 		return Status.DRAW; // full field and draw
 	}
 
@@ -258,11 +246,10 @@ public class TicTacToe {
 	 */
 	private char getSymbol(int state, int row, int col) {
 		int mask = setBit(0, row * 3 + col);
-		if ((mask & state) == mask) {
+		if ((mask & state) == mask)
 			return symbols[0];
-		} else if ((mask & (state >> 9)) == mask) {
+		else if ((mask & (state >> 9)) == mask)
 			return symbols[1];
-		}
 		return symbols[2];
 	}
 
@@ -289,7 +276,7 @@ public class TicTacToe {
 	/**
 	 * Returns which players turn it is
 	 * 
-	 * @return true if it's player 0s turn, otherwise false
+	 * @return 0 if it's player 0s turn, otherwise 1
 	 */
 	public int getTurn() {
 		return this.turn;
