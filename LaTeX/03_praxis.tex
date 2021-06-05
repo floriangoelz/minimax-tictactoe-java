@@ -1,0 +1,58 @@
+\chapter{Praxis}
+\section{Performancevergleich}
+
+Nachdem der Minimax-Algorithmus für das Spiel Tic-Tac-Toe in Java implementiert wurde, soll nun die 
+Performance mit der Umsetzung in Python verglichen werden. Hierfür wird bei beiden Versionen die Funktion 
+\code{value} für ein leeres Spielfeld mit Spieler 0 aufgerufen. D. h. die Funktion \code{value} berechnet 
+alle möglichen Spielzustände und deren Wert. Die CPU-Zeiten beziehen sich auf eine Testreihe mit einem 
+Intel i7-9700K. Für jeden Test werden jeweils fünf Durchgänge mit und ohne Memoisierung durchgeführt 
+und daraus der Durchschnittswert berechnet.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|ll|l|}
+        \hline
+        \multicolumn{4}{|l|}{\textbf{RAM}}                                             \\ \hline
+                                & ohne memoize & mit memoize &                         \\ \hline
+        \multirow{5}{*}{Python} &              &             & \multirow{12}{*}{in KB} \\
+                                &              &             &                         \\
+                                &              &             &                         \\
+                                &              &             &                         \\
+                                &              &             &                         \\ \cline{1-3}
+        average                 &              &             &                         \\ \cline{1-3}
+        \multirow{5}{*}{Java}   & 12875        & 1515        &                         \\
+                                & 13392        & 1515        &                         \\
+                                & 13387        & 1515        &                         \\
+                                & 12881        & 1515        &                         \\
+                                & 13391        & 1514        &                         \\ \cline{1-3}
+        average                 & 13185,2      & 1514,8      &                         \\ \hline
+    \end{tabular}
+    \caption{Ergebnisse der Performancetestreihe für den genutzten Arbeitsspeicher}
+\end{table}
+
+Die Messwerte zeigen, dass durch Memoisierung der genutzte Arbeitsspeicher um den Faktor 8,5 verringert 
+werden kann.
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|ll|l|}
+        \hline
+        \multicolumn{4}{|l|}{\textbf{CPU Time}}                                             \\ \hline
+                                & ohne memoize & mit memoize &                         \\ \hline
+        \multirow{5}{*}{Python} & 2520         & 42,6        & \multirow{12}{*}{in KB} \\
+                                & 2520         & 45          &                         \\
+                                & 2520         & 44          &                         \\
+                                & 2510         & 42          &                         \\
+                                & 2510         & 44          &                         \\ \cline{1-3}
+        average                 & 2516         & 43,92       &                         \\ \cline{1-3}
+        \multirow{5}{*}{Java}   & 43           & 8           &                         \\
+                                & 43           & 8           &                         \\
+                                & 44           & 9           &                         \\
+                                & 45           & 7           &                         \\
+                                & 42           & 8           &                         \\ \cline{1-3}
+        average                 & 43,4         & 8           &                         \\ \hline
+    \end{tabular}
+    \caption{Ergebnisse der Performancetestreihe für die benötigte Zeit}
+\end{table}
+
