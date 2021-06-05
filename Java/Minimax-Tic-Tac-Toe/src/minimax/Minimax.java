@@ -2,6 +2,7 @@ package minimax;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -61,10 +62,9 @@ public class Minimax {
 	 * @return value of the given state
 	 */
 	public int value(int state, int player) { // public for performance test
-		ArrayList<Integer> nextStates = new ArrayList<>();
-		if (TicTacToe.finished(state))
+		if (TicTacToe.isFinished(state))
 			return TicTacToe.utility(state, player);
-		nextStates = TicTacToe.nextStates(state, player);
+		List<Integer> nextStates = TicTacToe.nextStates(state, player);
 		int maxValue = -2;
 		int currentState;
 		Integer val;
@@ -89,8 +89,8 @@ public class Minimax {
 	 * @return best next state and value of the state
 	 */
 	private int[] bestMove(int state, int player) {
-		ArrayList<Integer> nextStates = TicTacToe.nextStates(state, player);
-		ArrayList<Integer> bestMoves = new ArrayList<>();
+		List<Integer> nextStates = TicTacToe.nextStates(state, player);
+		List<Integer> bestMoves = new ArrayList<>();
 		int bestVal = value(state, player);
 		int currentState;
 		int currentVal;

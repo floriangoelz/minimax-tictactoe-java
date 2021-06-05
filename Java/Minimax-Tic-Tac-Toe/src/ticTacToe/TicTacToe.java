@@ -1,6 +1,7 @@
 package ticTacToe;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class TicTacToe {
@@ -100,7 +101,7 @@ public class TicTacToe {
 	 * @param state of the game
 	 * @return boolean value if the game is over
 	 */
-	public static boolean finished(int state) {
+	public static boolean isFinished(int state) {
 		return utility(state, 0) != 2;
 	}
 
@@ -111,8 +112,8 @@ public class TicTacToe {
 	 * @param player the moves will be calculated for
 	 * @return list of possible states
 	 */
-	public static ArrayList<Integer> nextStates(int state, int player) {
-		ArrayList<Integer> possibleStates = new ArrayList<>();
+	public static List<Integer> nextStates(int state, int player) {
+		List<Integer> possibleStates = new ArrayList<>();
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 3; col++) {
 				if (isValidMove(state, row, col))
@@ -220,7 +221,7 @@ public class TicTacToe {
 	 * 
 	 * @return the status of the game
 	 */
-	public Status currentGameStatus() {
+	private Status currentGameStatus() {
 		int current;
 		for (int i = 0; i < 8; i++) {
 			current = WINNING_STATES[i];
@@ -258,7 +259,7 @@ public class TicTacToe {
 	 * 
 	 * @param state that will be drawn
 	 */
-	public void drawGame() {
+	private void drawGame() {
 		final String HORIZONTAL = "\n-----------------\n  ";
 		String print = "\n  ";
 		for (int i = 0; i < 3; i++) {

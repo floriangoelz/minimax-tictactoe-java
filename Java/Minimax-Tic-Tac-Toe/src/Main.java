@@ -6,7 +6,7 @@ import ticTacToe.TicTacToe;
 public class Main {
 
 	// Runtime object for memory calculation
-	static Runtime runtime = Runtime.getRuntime();
+	private static Runtime runtime = Runtime.getRuntime();
 
 	// Scanner for inputs
 	private Scanner sc;
