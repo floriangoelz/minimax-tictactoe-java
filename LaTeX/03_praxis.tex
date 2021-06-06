@@ -32,7 +32,7 @@ gehört auch eine Funktion, die ermittelt, ob der gegebene Zug zulässig ist ode
 welche benötigt werden, um den bestmöglichen Spielzug bei einem bestimmten Spielstand zu ermitteln. Um alle notwendigen Parameter zu erhalten,
 die für die Ermittlung des nächsten Spielzuges benötigt werden, ruft die Klasse Minimax teilweise statische Funktionen der Klasse TicTacToe auf,
 welche die notwendigen Werte zurückliefern. Die relevanteste Funktion in dieser Klasse ist die rekursive Funktion \code{value(int state, int player)}, 
-da diese in Kapitel \ref{chap:Performancevergleich} zur Messung der Performance aufgerufen wird. Die Funktion dient der Bewertung eines möglichen 
+da diese in Kapitel \ref{chap:performancevergleich} zur Messung der Performance aufgerufen wird. Die Funktion dient der Bewertung eines möglichen 
 Spielzustands anhand der möglichen Gewinnmöglichkeiten (siehe auch Kapitel \ref{chap:Minimax}).
 
 \subsection{Performancerelevante Implementierungen im Detail}
@@ -42,7 +42,8 @@ Spielzustands anhand der möglichen Gewinnmöglichkeiten (siehe auch Kapitel \re
 \subsubsection{Caching von Folgezuständen}
 
 \section{Performancevergleich von Java und Python}
-\label{chap:Performancevergleich}
+\label{chap:performancevergleich}
+
 Nachdem der Minimax-Algorithmus für das Spiel Tic-Tac-Toe in Java implementiert wurde, soll nun die 
 Performance mit der Umsetzung in Python verglichen werden. Hierfür wird bei beiden Versionen die Funktion 
 \code{value} für ein leeres Spielfeld mit Spieler 0 aufgerufen. D. h. die Funktion \code{value} berechnet 
@@ -56,12 +57,7 @@ und daraus der Durchschnittswert berechnet.
         \hline
         \multicolumn{4}{|l|}{\textbf{RAM}}                                             \\ \hline
                                 & ohne memoize & mit memoize &                         \\ \hline
-        \multirow{5}{*}{Python} &              &             & \multirow{12}{*}{in KB} \\
-                                &              &             &                         \\
-                                &              &             &                         \\
-                                &              &             &                         \\
-                                &              &             &                         \\ \cline{1-3}
-        average                 &              &             &                         \\ \cline{1-3}
+        \multirow{1}{*}{Python} &              & 808         & \multirow{7}{*}{in KB}  \\ \cline{1-3}
         \multirow{5}{*}{Java}   & 12875        & 1515        &                         \\
                                 & 13392        & 1515        &                         \\
                                 & 13387        & 1515        &                         \\
@@ -72,17 +68,19 @@ und daraus der Durchschnittswert berechnet.
     \caption{Ergebnisse der Performancetestreihe für den genutzten Arbeitsspeicher}
 \end{table}
 
-Die Messwerte zeigen, dass durch Memoisierung der genutzte Arbeitsspeicher um den Faktor 8,5 verringert 
-werden kann.
-
+Da für den belegten Arbeitsspeicher der Python Implementierung keine verlässlichen Messwerte gemessen werden 
+konnten, wird der Messwert aus dem Jupyter-Notebook (Bitboard mit Memoisierung) verwendet. Auffallend ist, 
+dass die Java Implementierung selbst mit Memoisierung, fast doppelt so viel Speicher verbraucht wird. 
+Darüber hinaus kann durch Memoisierung bei der Implementierung in Java der Speicherverbrauch um den 
+Faktor 8,5 reduziert werden.
 
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|ll|l|}
         \hline
-        \multicolumn{4}{|l|}{\textbf{CPU Time}}                                             \\ \hline
+        \multicolumn{4}{|l|}{\textbf{CPU Time}}                                        \\ \hline
                                 & ohne memoize & mit memoize &                         \\ \hline
-        \multirow{5}{*}{Python} & 2520         & 42,6        & \multirow{12}{*}{in KB} \\
+        \multirow{5}{*}{Python} & 2520         & 42,6        & \multirow{12}{*}{in ms} \\
                                 & 2520         & 45          &                         \\
                                 & 2520         & 44          &                         \\
                                 & 2510         & 42          &                         \\
@@ -98,3 +96,6 @@ werden kann.
     \caption{Ergebnisse der Performancetestreihe für die benötigte Zeit}
 \end{table}
 
+Die Schnelligkeit der Python-Implementierung mit Memoisierung ist in etwa gleich zur Java-Implementierung 
+ohne Memoisierung. Mit Memoisierung kann die Laufzeit durch die Verwendung von Java nochmal um 80\% verringert 
+werden.
