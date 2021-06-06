@@ -36,7 +36,7 @@ da diese in Kapitel \ref{chap:performancevergleich} zur Messung der Performance 
 Spielzustands anhand der möglichen Gewinnmöglichkeiten (siehe auch Kapitel \ref{chap:Minimax}).
 
 \subsection{Performancerelevante Implementierungen im Detail}
-
+\label{chap:implementierungen}
 \subsubsection{Spielstand als Bitmaske}
 
 \subsubsection{Caching von Folgezuständen}
@@ -99,3 +99,32 @@ Faktor 8,5 reduziert werden.
 Die Schnelligkeit der Python-Implementierung mit Memoisierung ist in etwa gleich zur Java-Implementierung 
 ohne Memoisierung. Mit Memoisierung kann die Laufzeit durch die Verwendung von Java nochmal um 80\% verringert 
 werden.
+
+\section{Java vs. Python}
+Neben den in Kapitel \ref{chap:implementierungen} Unterschieden bei der Implementierung, können die in Kapitel 
+\ref{chap:performancevergleich} ermittelten Performanceunterschiede durch Unterschiede in der Funktionsweise der 
+Sprachen erklärt werden.
+
+\subsection{Memory Management}
+Während Python oft als unperformant wahrgenommen wird, konnte Python beim Arbeitsspeicherverbrauch im Vergleich 
+zu Java punkten. Dies kann vorallem durch unterschiede beim Speichermanagement der beiden Sprachen erklärt werden. 
+
+Arbeitsspeicher wird in Python über einen Heap, der intern verwaltet wird. Wird also Arbeitsspeicher benötigt, 
+wird dieser durch das Memory-Management vom Betriebssystem angefordert. Objekte bleiben nur so lange im Speicher 
+wie sie benötigt werden. Python nutzt das sogenannte Reference Counting um Objekte zu speichern.
+
+\begin{lstlisting}[caption={Codebeispiel zur Verwaltung von Objekten in Python}]
+    a = 9
+    b = 9
+    c = 11
+\end{lstlisting}
+
+In diesem Beispiel wird der Wert 9 als Objekt im Speicher erstellt und Variable \code{a} zugewiesen. Da 
+Das Objekt mit dem Wert 9 schon existiert, wir Variable {b} als weitere Referenz hinzugefügt. Für Variabl 
+\code{c} heißt das, dass ein Objekt mit dem Wert 11 angelegt werden muss und \code{c} als Referenz hinterlegt wird. 
+Beträgt die Anzahl der Referenzen eines Objekts Null, so wird es aus den Speicher entfernt. Die Referenzen 
+werden zyklisch vom Garbage Collector überprüft und Objekte ohne Referenzen entfernt. Reference Counting 
+hat den Vorteil, dass nicht genutzter Speicher sehr schnell erkannt wird. Allerdings entsteht durch das Zählen 
+der Referenzen ein gewisser Overhead, der im Vergleich zu anderen Garbage Collecting Verfahren aber eher gering ausfällt.
+
+%TODO: Garbage Collection Java
