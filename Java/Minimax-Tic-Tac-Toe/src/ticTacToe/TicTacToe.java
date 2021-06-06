@@ -45,8 +45,6 @@ public class TicTacToe {
 		gameStatus = Status.RUNNING;
 		// Randomly decide who starts the match
 		turn = r.nextInt(2);
-		// Draw the empty board
-		drawGame();
 	}
 
 	// -----------------------------------------
@@ -183,7 +181,6 @@ public class TicTacToe {
 	private void swapTurns() {
 		this.turn = this.turn == 0 ? 1 : 0;
 		gameStatus = currentGameStatus();
-		drawGame();
 	}
 
 	/**
@@ -191,7 +188,7 @@ public class TicTacToe {
 	 * returns the new state, otherwise the old state
 	 * 
 	 * @param state  state of the board where the marker should be placed on
-	 * @param player whos marker will be placed
+	 * @param player whose marker will be placed
 	 * @param row    the marker will be placed on (0-2)
 	 * @param col    the marker will be placed on (0-2)
 	 * @return the state of the game after placing (or not placing) the marker
@@ -245,33 +242,13 @@ public class TicTacToe {
 	 * @param col   the symbol shall be fetched from
 	 * @return the symbol at the given position
 	 */
-	private char getSymbol(int state, int row, int col) {
+	public char getSymbol(int row, int col) {
 		int mask = setBit(0, row * 3 + col);
-		if ((mask & state) == mask)
+		if ((mask & this.field) == mask)
 			return symbols[0];
-		else if ((mask & (state >> 9)) == mask)
+		else if ((mask & (this.field >> 9)) == mask)
 			return symbols[1];
 		return symbols[2];
-	}
-
-	/**
-	 * Draws the current state of the game to the console window
-	 * 
-	 * @param state that will be drawn
-	 */
-	private void drawGame() {
-		final String HORIZONTAL = "\n-----------------\n  ";
-		String print = "\n  ";
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				print += getSymbol(this.field, i, j);
-				if (j != 2)
-					print += "  |  ";
-			}
-			if (i != 2)
-				print += HORIZONTAL;
-		}
-		System.out.println(print + "\n");
 	}
 
 	/**

@@ -31,8 +31,13 @@ public class Main {
 		boolean running = true;
 		while (running) {
 			game = new TicTacToe();
-			while (game.getGameStatus() == TicTacToe.Status.RUNNING)
+			while (game.getGameStatus() == TicTacToe.Status.RUNNING) {
+				// draw the current game status
+				drawGame(game);
 				nextMove();
+			}
+			// draw the final field
+			drawGame(game);
 			gameEnded();
 			running = anotherGameInput();
 		}
@@ -141,5 +146,25 @@ public class Main {
 			input = getLowerCaseUserInput();
 		} while (!input.equals("y") && !input.equals("n"));
 		return input.equals("y") ? true : false;
+	}
+
+	/**
+	 * Draws the current state of the given game to the console window
+	 * 
+	 * @param game the state shall be drawn of
+	 */
+	private void drawGame(TicTacToe game) {
+		final String HORIZONTAL = "\n-----------------\n  ";
+		String print = "\n  ";
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				print += game.getSymbol(i, j);
+				if (j != 2)
+					print += "  |  ";
+			}
+			if (i != 2)
+				print += HORIZONTAL;
+		}
+		System.out.println(print + "\n");
 	}
 }

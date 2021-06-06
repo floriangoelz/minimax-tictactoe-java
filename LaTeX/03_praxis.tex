@@ -1,6 +1,48 @@
 \chapter{Praxis}
-\section{Performancevergleich}
 
+\section{Implementierung von Tic-Tac-Toe und Minimax}
+Ziel dieses Kapitels ist es die Implementierung in Java zu erläutern. Da der Fokus dieser Arbeit jedoch auf der Performance
+des Algorithmus in Java liegt und eine detaillierte Erläutertung der Implementierung sehr aufwendig wäre, folgt lediglich
+ein grober Überblick über die meisten Aspekte der Implementierung. Lediglich Teile der Implementierung, die besonders relevant
+für die Performance des Programms sind werden detaillierter erläutert. 
+
+\subsection{Objektorientierung: Unterteilung in Klassen}
+Zunächst folgt eine grobe Erläuterung der drei Klassen, in die die Implementierung unterteilt wurde.
+Diese Klassen sind auch im folgenden Klassendiagramm zu sehen:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.3]{img/uml_diagram.png}
+    \caption[Vollständiges Klassendiagramm der Implementierung]{Vollständiges Klassendiagramm der Implementierung (eigene Anfertigung)} % TODO besseres Bild, sobald es richtig ist
+    \label{fig:uml}
+\end{figure}
+
+\textbf{Main.java:} Diese Klasse enthält die main-Methode und ist der Startpunkt für das Programm. Sie ist sie dafür
+verantwortlich, dass Objekte der anderen beiden Klassen erstellt und verwaltet werden. Die gesamte Logik, welche es ermöglicht, dass 
+eine Person eine Runde Tic-Tac-Toe gegen den Minimax-Algorithmus spielen kann, ist in dieser Klasse. Hierzu gehören beispielsweise 
+das Abfragen des nächsten Zuges der Person und des Algorithmus sowie alle Ein- und Ausgaben, die zur Bedienung des Programmes notwendig sind. 
+Außerdem enthält diese Klasse die Funktion zur Messung der Performance, welche in Kapitel \ref{chap:Performancevergleich} zum Einsatz kommt.
+
+\textbf{TicTacToe.java:} Die Klasse TicTacToe ist, wie der Name schon sagt, die Klasse, in der die gesamte benötigte Logik für eine Runde
+Tic-Tac-Toe enthalten ist. In dieser Klasse sind sowohl die möglichen Zustände, bei denen ein Spieler das Spiel gewonnen hat als auch der
+aktuelle Zustand des Spielbretts gespeichert. Ebenfalls wird der Status des Spiels (siehe enum in Abbildung \ref{fig:uml}), sowie der Spieler, der aktuell
+am Zug ist, gespeichert. Des Weiteren sind alle Funktionen enthalten, die zum Anzeigen oder Verändern des Spielfeldes benötigt werden. Hierzu
+gehört auch eine Funktion, die ermittelt, ob der gegebene Zug zulässig ist oder das gewünschte Feld bereits belegt ist.
+
+\textbf{Minimax.java:} Innerhalb der Klasse Minimax ist die gesamte Logik für den Minimax Algorithmus enthalten. Hierzu gehören alle Funktionen,
+welche benötigt werden, um den bestmöglichen Spielzug bei einem bestimmten Spielstand zu ermitteln. Um alle notwendigen Parameter zu erhalten,
+die für die Ermittlung des nächsten Spielzuges benötigt werden, ruft die Klasse Minimax teilweise statische Funktionen der Klasse TicTacToe auf,
+welche die notwendigen Werte zurückliefern. Die relevanteste Funktion in dieser Klasse ist die rekursive Funktion \code{value(int state, int player)}, 
+da diese in Kapitel \ref{chap:Performancevergleich} zur Messung der Performance aufgerufen wird. Die Funktion dient der Bewertung eines möglichen 
+Spielzustands anhand der möglichen Gewinnmöglichkeiten (siehe auch Kapitel \ref{chap:Minimax}).
+
+\subsection{Performancerelevante Implementierungen im Detail}
+
+\subsubsection{Spielstand als Bitmaske}
+
+\subsubsection{Caching von Folgezuständen}
+
+\section{Performancevergleich von Java und Python}
+\label{chap:Performancevergleich}
 Nachdem der Minimax-Algorithmus für das Spiel Tic-Tac-Toe in Java implementiert wurde, soll nun die 
 Performance mit der Umsetzung in Python verglichen werden. Hierfür wird bei beiden Versionen die Funktion 
 \code{value} für ein leeres Spielfeld mit Spieler 0 aufgerufen. D. h. die Funktion \code{value} berechnet 
