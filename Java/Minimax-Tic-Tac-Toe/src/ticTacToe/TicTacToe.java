@@ -2,7 +2,6 @@ package ticTacToe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class TicTacToe {
 
@@ -12,8 +11,6 @@ public class TicTacToe {
 
 	// All states a player wins the game with
 	private static final int[] WINNING_STATES = new int[8];
-	// The random instance to determine who starts the game
-	private static Random r = new Random();
 	// Initialize winning states static (for all future games)
 	static {
 		initializeWinningStates();
@@ -33,19 +30,9 @@ public class TicTacToe {
 	// The possible symbols that can be on the board
 	private char[] symbols = new char[] { 'O', 'X', ' ' };
 	// 0 if its player 0 (O)s turn, 1 for player 1 (X)
-	private int turn;
+	private int turn = 0;
 	// Holds the current Status of the game (e.g DRAW)
-	private Status gameStatus;
-
-	// -----------------------------------------
-	// Constructors
-	// -----------------------------------------
-	public TicTacToe() {
-		// Initialize the game as running
-		gameStatus = Status.RUNNING;
-		// Randomly decide who starts the match
-		turn = r.nextInt(2);
-	}
+	private Status gameStatus = Status.RUNNING;
 
 	// -----------------------------------------
 	// Static methods without instance context

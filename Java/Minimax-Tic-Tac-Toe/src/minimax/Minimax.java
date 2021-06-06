@@ -36,7 +36,7 @@ public class Minimax {
 	 * @return best possible next state
 	 */
 	public int getMove(int state, int player) {
-		int bestState = bestMove(state, player)[0];
+		int bestState = bestMove(state, player);
 		return bestState;
 	}
 
@@ -88,22 +88,18 @@ public class Minimax {
 	 * @param player whose move shall be calculated
 	 * @return best next state and value of the state
 	 */
-	private int[] bestMove(int state, int player) {
+	private int bestMove(int state, int player) {
 		List<Integer> nextStates = TicTacToe.nextStates(state, player);
 		List<Integer> bestMoves = new ArrayList<>();
 		int bestVal = value(state, player);
 		int currentState;
-		int currentVal;
 		for (int i = 0; i < nextStates.size(); i++) {
 			currentState = nextStates.get(i);
-			currentVal = -value(currentState, other(player));
-			if (currentVal == bestVal)
+			if (-value(currentState, other(player)) == bestVal)
 				bestMoves.add(currentState);
-			cache.clear(); // clear the cache before the next state
 		}
-		int bestState = bestMoves.get(r.nextInt(bestMoves.size()));
-		int[] returnValue = { bestState, bestVal };
-		return returnValue;
+		// return random move to make the game more exciting ;)
+		return bestMoves.get(r.nextInt(bestMoves.size()));
 	}
 
 }

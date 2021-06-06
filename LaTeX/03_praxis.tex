@@ -11,7 +11,7 @@ Zunächst folgt eine grobe Erläuterung der drei Klassen, in die die Implementie
 Diese Klassen sind auch im folgenden Klassendiagramm zu sehen:
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.3]{img/uml_diagram.png}
+    \includegraphics[scale=0.2]{img/uml_diagram.png}
     \caption[Vollständiges Klassendiagramm der Implementierung]{Vollständiges Klassendiagramm der Implementierung (eigene Anfertigung)} % TODO besseres Bild, sobald es richtig ist
     \label{fig:uml}
 \end{figure}
@@ -20,7 +20,7 @@ Diese Klassen sind auch im folgenden Klassendiagramm zu sehen:
 verantwortlich, dass Objekte der anderen beiden Klassen erstellt und verwaltet werden. Die gesamte Logik, welche es ermöglicht, dass 
 eine Person eine Runde Tic-Tac-Toe gegen den Minimax-Algorithmus spielen kann, ist in dieser Klasse. Hierzu gehören beispielsweise 
 das Abfragen des nächsten Zuges der Person und des Algorithmus sowie alle Ein- und Ausgaben, die zur Bedienung des Programmes notwendig sind. 
-Außerdem enthält diese Klasse die Funktion zur Messung der Performance, welche in Kapitel \ref{chap:Performancevergleich} zum Einsatz kommt.
+Außerdem enthält diese Klasse die Funktion zur Messung der Performance, welche in Kapitel \ref{chap:performancevergleich} zum Einsatz kommt.
 
 \textbf{TicTacToe.java:} Die Klasse TicTacToe ist, wie der Name schon sagt, die Klasse, in der die gesamte benötigte Logik für eine Runde
 Tic-Tac-Toe enthalten ist. In dieser Klasse sind sowohl die möglichen Zustände, bei denen ein Spieler das Spiel gewonnen hat als auch der
@@ -101,13 +101,13 @@ ohne Memoisierung. Mit Memoisierung kann die Laufzeit durch die Verwendung von J
 werden.
 
 \section{Java vs. Python}
-Neben den in Kapitel \ref{chap:implementierungen} Unterschieden bei der Implementierung, können die in Kapitel 
+Neben den in Kapitel \ref{chap:implementierungen} gezeigten Unterschieden bei der Implementierung, können die in Kapitel 
 \ref{chap:performancevergleich} ermittelten Performanceunterschiede durch Unterschiede in der Funktionsweise der 
 Sprachen erklärt werden.
 
 \subsection{Memory Management}
 Während Python oft als unperformant wahrgenommen wird, konnte Python beim Arbeitsspeicherverbrauch im Vergleich 
-zu Java punkten. Dies kann vorallem durch unterschiede beim Speichermanagement der beiden Sprachen erklärt werden. 
+zu Java punkten. Dies kann vorallem durch Unterschiede beim Speichermanagement der beiden Sprachen erklärt werden. 
 
 Arbeitsspeicher wird in Python über einen Heap, der intern verwaltet wird. Wird also Arbeitsspeicher benötigt, 
 wird dieser durch das Memory-Management vom Betriebssystem angefordert. Objekte bleiben nur so lange im Speicher 
