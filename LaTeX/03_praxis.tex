@@ -11,7 +11,7 @@ Zunächst folgt eine grobe Erläuterung der drei Klassen, in die die Implementie
 Diese Klassen sind auch im folgenden Klassendiagramm zu sehen:
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.2]{img/uml_diagram.png}
+    \includegraphics[scale=0.217]{img/uml_diagram.png}
     \caption[Vollständiges Klassendiagramm der Implementierung]{Vollständiges Klassendiagramm der Implementierung (eigene Anfertigung)}
     \label{fig:uml}
 \end{figure}
@@ -39,31 +39,34 @@ Spielzustands anhand der möglichen Gewinnmöglichkeiten (siehe auch Kapitel \re
 \label{chap:implementierungen}
 \subsubsection{Spielstand als Bitmaskierung}
 Wie fast immer in der Programmierung, gibt es viele verschiedene Möglichkeiten ein Ziel zu erreichen. In diesem Fall ist das Ziel die Speicherung des
-Spielstandes, also die Speicherung der Kreuze und Kreise, die bereits gesetzt sind. Hierzu könnte beispielsweise ein zweidimensionales Feld vom Typ 
-Byte verwendet werden, welches für jede Koordinate von [0][0] bis [2][2] speichert, ob der Zustand -1 (leer) 0 (Kreis) oder 1 (Kreuz) ist. Auf diese
-Weise würden insgesamt neun Bytes benötigt werden, ein Byte für jedes Feld. Da ein Byte jedoch acht Bits enthält und für die Darstellung von drei Zuständen
-lediglich 2 Bits benötigt werden, wäre dies eine Verschwendung von Speicherplatz. Aus diesem Grund wird der gesamte Spielstand in einem int (4 Bytes)
-gespeichert. Die ersten neun Bits können gesetzt werden, wenn der erste Spieler (O) sein Symbol gesetzt hat, während die Bits 10-18 gesetzt werden, wenn
-Spieler zwei (X) das Feld gesetzt hat. Die anderen Bits sind nicht von Relevanz. Der in Abbildung \ref{fig:tictactoestates} gezeigte mögliche zweite Zustand
-würde hierbei folgt aussehen:
+Spielstandes, also die Speicherung der Kreuze und Kreise, die bereits gesetzt sind. Möglich wäre hierbei die Speicherung in einer Map, einer Liste, 
+einem Feld oder in mehreren Variablen eines geeigneten Datentyps. In diesem Fall wäre womöglich eine Speicherung in einem zweidimensionalen Feld vom Typ
+Byte naheliegend. In diesem Feld könnte für jede Koordinate von [0][0] bis [2][2] gespeichert werden, wie der Zustand des entsprechenden Feldes ist (-1 für
+leer, 0 für Kreis und 1 für Kreuz). Eine derartige Implementierung würde insgesamt neun Bytes benötigen. Ein Byte für jedes mögliche Feld des Spielbrettes.
+Da ein Byte jedoch acht Bits enthält und für die Darstellung von drei Zuständen lediglich 2 Bits benötigt werden, wäre dies eine Verschwendung von Speicherplatz.
+Aus diesem Grund wird der gesamte Spielstand in der Implementierung in einem int (4 Bytes) gespeichert. Die ersten neun Bits können gesetzt werden, wenn der erste
+Spieler (O) sein Symbol gesetzt hat, während die Bits 9-17 (gezählt ab 0) gesetzt werden, wenn Spieler zwei (X) das Feld gesetzt hat. Die anderen Bits sind nicht
+von Relevanz. Der in Abbildung \ref{fig:tictactoestates} gezeigte mögliche zweite Zustand sieht hierbei wie folgt aus:
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.4]{img/bitmaskierung.png}
+    \includegraphics[scale=0.45]{img/bitmaskierung.png}
     \caption[Bitmaskierung eines Tic-Tac-Toe Zustands]{Bitmaskierung eines Tic-Tac-Toe Zustands (eigene Anfertigung)}
 \end{figure}
-Auf diese Weise können einerseits 5 Byte an Speicher eingespart werden. Zusätzlich ergibt sich ein großer Performancevorteil. Da Computer komplett 
-auf dem Binärsystem basieren sind Operationen, welche lediglich einzelne Bits setzen, deutlich schneller als das Setzen eines ganzes Bytes.
+Auf diese Weise können zunächst fünf Byte an Speicher eingespart werden. Ein noch größerer Vorteil ist jedoch der große Performancevorteil, der sich bei dieser
+Implementierung ergibt. Da Computer komplett auf dem Binärsystem basieren sind Operationen, welche lediglich einzelne Bits setzen, deutlich schneller als das
+Setzen eines ganzes Bytes. Dies hat einen besonders großen Einfluss auf die Laufzeit des Minimax Algorithmus (siehe \ref{chap:minimax}), da dieser immer wieder
+rekursiv durch die verschiedenen Zustände rechnen muss und sich deswegen eine Vielzahl an Zugriffen ergeben.
 
 
 \subsubsection{Caching von Folgezuständen}
-Wie in Kapitel \ref{chap:minimax} bereits angedeutet, werden im Laufe eines TicTacToe Spiels immer wieder alle Folgezustände geprüft, damit der
-Minimax-Algorithmus in der Lage ist, die verschiedenen bestmöglichen Züge zu ermitteln. Hierbei wird jedem Zustand ein Wert zugeordnet, welcher
+Wie in Kapitel \ref{chap:minimax} bereits angedeutet, werden im Laufe eines Tic-Tac-Toe Spiels immer wieder eine große Menge an Folgezuständen geprüft, 
+damit der Minimax-Algorithmus in der Lage ist, die verschiedenen bestmöglichen Züge zu ermitteln. Hierbei wird jedem Zustand ein Wert zugeordnet, welcher
 anzeigt ob der Zustand im schlechtesten Fall zum Sieg, zum Untenschieden oder zur Niederlage für den Algorithmus führt.
 Um zu verhindern, dass die Zustände immer wieder neu auf ihren Wert geprüft werden müssen, wird eine Map<Integer, Integer> erstellt, welche einen
-Cache darstellt, der als Schlüssel den Zustand und als Wert den für den Zustand errechneten Wert speichert kann. Jedes Mal, wenn der Wert für einen
+Cache darstellt, der als Schlüssel den Zustand und als Wert den für den Zustand errechneten Wert speichern kann. Jedes Mal, wenn der Wert für einen
 möglichen Zustand errechnet werden soll, wird zunächst geschaut, ob dieser Wert bereits im Cache ist. Sollte der Wert sich im Cache befinden, so wird
-der Wert aus dem Cache gelesen, während im sonstigen Fall einmalig die Berechnung durchgeführt wird, woraufhin der Wert im Cache enthalten ist und künftig
-nicht jedes Mal errechnet werden muss.
+der Wert aus dem Cache gelesen und weiter verwendet, während im sonstigen Fall einmalig die Berechnung durchgeführt wird. Nach dieser Berechnung wird der 
+Wert in den Cache eingetragen, woraufhin der Wert bei zukünftigen Aufrufen nicht jedes Mal neu ermittelt werden muss.
 
 \section{Performancevergleich von Java und Python}
 \label{chap:performancevergleich}
