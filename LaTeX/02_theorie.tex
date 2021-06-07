@@ -10,6 +10,7 @@ ein Feld zu zeichnen. Der Anfang einer Runde Tic-Tac-Toe kann beispielsweise wie
     \centering
     \includegraphics[scale=0.25]{img/tictactoe_start.png}
     \caption[Möglicher Anfang eines Tic-Tac-Toe Spiels]{Möglicher Anfang eines Tic-Tac-Toe Spiels (eigene Anfertigung)}
+    \label{fig:tictactoestates}
 \end{figure}
 Im ersten Teil des Bildes erkennt man die neun leeren Felder des Spielfeldes. Im zweiten Teil des Bildes fängt der erste
 Spieler damit an, sein erstes Kreuz in die Mitte des Spielfeldes zu setzen. Der zweite Spieler ist nun am Zug und setzt
@@ -29,7 +30,7 @@ Ende ist das komplette Spielfeld ausgefüllt und es ergeben sich keine drei Symb
 Entsprechend ist die Runde unentschieden ausgegangen.
 
 \section{Der Minimax-Algorithmus}
-\label{chap:Minimax}
+\label{chap:minimax}
 Nachdem das Spiel Tic-Tac-Toe erklärt wurde, soll nun mit Hilfe des Minimax Algorithmus eine künstliche Intelligenz 
 entwickelt werden, die in einem Spiel gegen einen menschlichen Spieler immer einen optimalen Zug ausführt. Der Minimax 
 Algorithmus baut dabei auf der Funktion \code{value} auf, die wie folgt definiert ist:

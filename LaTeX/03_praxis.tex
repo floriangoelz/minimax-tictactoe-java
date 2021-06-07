@@ -12,7 +12,7 @@ Diese Klassen sind auch im folgenden Klassendiagramm zu sehen:
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.2]{img/uml_diagram.png}
-    \caption[Vollständiges Klassendiagramm der Implementierung]{Vollständiges Klassendiagramm der Implementierung (eigene Anfertigung)} % TODO besseres Bild, sobald es richtig ist
+    \caption[Vollständiges Klassendiagramm der Implementierung]{Vollständiges Klassendiagramm der Implementierung (eigene Anfertigung)}
     \label{fig:uml}
 \end{figure}
 
@@ -33,13 +33,37 @@ welche benötigt werden, um den bestmöglichen Spielzug bei einem bestimmten Spi
 die für die Ermittlung des nächsten Spielzuges benötigt werden, ruft die Klasse Minimax teilweise statische Funktionen der Klasse TicTacToe auf,
 welche die notwendigen Werte zurückliefern. Die relevanteste Funktion in dieser Klasse ist die rekursive Funktion \code{value(int state, int player)}, 
 da diese in Kapitel \ref{chap:performancevergleich} zur Messung der Performance aufgerufen wird. Die Funktion dient der Bewertung eines möglichen 
-Spielzustands anhand der möglichen Gewinnmöglichkeiten (siehe auch Kapitel \ref{chap:Minimax}).
+Spielzustands anhand der möglichen Gewinnmöglichkeiten (siehe auch Kapitel \ref{chap:minimax}).
 
 \subsection{Performancerelevante Implementierungen im Detail}
 \label{chap:implementierungen}
-\subsubsection{Spielstand als Bitmaske}
+\subsubsection{Spielstand als Bitmaskierung}
+Wie fast immer in der Programmierung, gibt es viele verschiedene Möglichkeiten ein Ziel zu erreichen. In diesem Fall ist das Ziel die Speicherung des
+Spielstandes, also die Speicherung der Kreuze und Kreise, die bereits gesetzt sind. Hierzu könnte beispielsweise ein zweidimensionales Feld vom Typ 
+Byte verwendet werden, welches für jede Koordinate von [0][0] bis [2][2] speichert, ob der Zustand -1 (leer) 0 (Kreis) oder 1 (Kreuz) ist. Auf diese
+Weise würden insgesamt neun Bytes benötigt werden, ein Byte für jedes Feld. Da ein Byte jedoch acht Bits enthält und für die Darstellung von drei Zuständen
+lediglich 2 Bits benötigt werden, wäre dies eine Verschwendung von Speicherplatz. Aus diesem Grund wird der gesamte Spielstand in einem int (4 Bytes)
+gespeichert. Die ersten neun Bits können gesetzt werden, wenn der erste Spieler (O) sein Symbol gesetzt hat, während die Bits 10-18 gesetzt werden, wenn
+Spieler zwei (X) das Feld gesetzt hat. Die anderen Bits sind nicht von Relevanz. Der in Abbildung \ref{fig:tictactoestates} gezeigte mögliche zweite Zustand
+würde hierbei folgt aussehen:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{img/bitmaskierung.png}
+    \caption[Bitmaskierung eines Tic-Tac-Toe Zustands]{Bitmaskierung eines Tic-Tac-Toe Zustands (eigene Anfertigung)}
+\end{figure}
+Auf diese Weise können einerseits 5 Byte an Speicher eingespart werden. Zusätzlich ergibt sich ein großer Performancevorteil. Da Computer komplett 
+auf dem Binärsystem basieren sind Operationen, welche lediglich einzelne Bits setzen, deutlich schneller als das Setzen eines ganzes Bytes.
+
 
 \subsubsection{Caching von Folgezuständen}
+Wie in Kapitel \ref{chap:minimax} bereits angedeutet, werden im Laufe eines TicTacToe Spiels immer wieder alle Folgezustände geprüft, damit der
+Minimax-Algorithmus in der Lage ist, die verschiedenen bestmöglichen Züge zu ermitteln. Hierbei wird jedem Zustand ein Wert zugeordnet, welcher
+anzeigt ob der Zustand im schlechtesten Fall zum Sieg, zum Untenschieden oder zur Niederlage für den Algorithmus führt.
+Um zu verhindern, dass die Zustände immer wieder neu auf ihren Wert geprüft werden müssen, wird eine Map<Integer, Integer> erstellt, welche einen
+Cache darstellt, der als Schlüssel den Zustand und als Wert den für den Zustand errechneten Wert speichert kann. Jedes Mal, wenn der Wert für einen
+möglichen Zustand errechnet werden soll, wird zunächst geschaut, ob dieser Wert bereits im Cache ist. Sollte der Wert sich im Cache befinden, so wird
+der Wert aus dem Cache gelesen, während im sonstigen Fall einmalig die Berechnung durchgeführt wird, woraufhin der Wert im Cache enthalten ist und künftig
+nicht jedes Mal errechnet werden muss.
 
 \section{Performancevergleich von Java und Python}
 \label{chap:performancevergleich}

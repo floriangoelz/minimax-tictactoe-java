@@ -132,10 +132,10 @@ public class TicTacToe {
 	 * 
 	 * <pre>
 	 * Example: if the given player is 0
-	 * - Returns 1 if player 0 won the game
-	 * - Returns -1 if player 0 lost the game
+	 * - Returns 1 if player 0 will win the game
+	 * - Returns -1 if player 0 lose the game
 	 * - Returns 2 if the game hasn't ended yet
-	 * - Returns 0 if the game ended in a draw
+	 * - Returns 0 if the game will end in a draw
 	 * </pre>
 	 * 
 	 * Same rules apply for given player 1
