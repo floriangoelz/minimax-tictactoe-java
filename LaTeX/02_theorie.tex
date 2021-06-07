@@ -87,15 +87,25 @@ Neben den in Kapitel \ref{chap:implementierungen} gezeigten Unterschieden bei de
 bei der Performance durch die unterschiedlichen Funktionsweisen und Eigenschaften der beiden Sprachen entstehen.
 
 \subsection{Performanceunterschiede}
-Einer der größten Unterschiede zwischen den zwei Sprachen ist, dass Python Code interpretiert wird, während Java Code kompiliert und 
-interpretiert wird. Kompilierte Sprachen werden vor dem Ausführen vollständig in Maschinensprache übersetzt, den der 
-jeweilige Prozessor anschließend ausführt. Da Java Programme in der Java Virtual Machine (JVM) ausgeführt werden, wird 
-der Code zunächst in plattformunabhängigen Java Bytecode übersetzt. Der Java Bytecode muss anschließend in Maschinencode 
-übersetzt werden. Dies erfolgt einerseits durch interpretieren des Codes zur Laufzeit. Um die Performance zu verbessern 
-wird der Interpretierungsprozess von einem Just in Time (JIT) Compiler unterstützt, der gegebenenfalls Java-Bytecodesequenzen 
-in Maschinencode übersetzt, was die Laufzeit deutlich reduziert.\autocite[Vgl.][]{Aboullaite.31.8.2017}
+Ähnlich wie Java nutzt auch Python eine virtuelle Maschine, um plattformunabhängigkeit umzusetzen. Dabei wird der Code 
+zunächst in den jeweiligen Bytecode der virtuellen Maschine übersetzt und anschließend mit Hilfe eines Interpreters während 
+der Laufzeit in Maschinencode übersetzt. Kompilierte Sprachen werden vor dem Ausführen vollständig in Maschinensprache übersetzt, den der 
+jeweilige Prozessor anschließend ausführt. Beim Interpretieren von Code, werden einzelne Anweisungen zur Laufzeit schrittweise 
+in Maschinencode übersetzt. Diese Vorgehensweise bietet den Vorteil, dass das Debugging einfacher ist, da hier Anweisungen 
+einzeln übersetzt und ausgeführt werden und somit Fehler leichter im Code lokalisiert werden können. Der Nachteil ist, dass 
+intepretieren deutlich langsamer ist als kompilieren, da der Code während der Laufzeit übersetzt werden muss. Da Java Programme 
+in der Java Virtual Machine (JVM) ausgeführt werden, wird der Code zunächst in plattformunabhängigen Java Bytecode übersetzt. 
+Der Java Bytecode muss anschließend in Maschinencode übersetzt werden. Dies erfolgt einerseits durch interpretieren des Codes 
+zur Laufzeit. Um die Performance zu verbessern wird der Interpretierungsprozess von einem Just in Time (JIT) Compiler unterstützt, 
+der gegebenenfalls Java-Bytecodesequenzen in Maschinencode übersetzt, was die Laufzeit deutlich reduziert.\autocite[Vgl.][]{Aboullaite.31.8.2017}
+Python nutzt hingegen standardmäßig keinen JIT-Compiler. Das hat zur Folge, dass auch keine JIT-Optimierung zur Laufzeit stattfindet 
+und damit die Laufzeit höher ausfällt als bei Java.\autocite[Vgl.][]{Shaw.16.7.2018}
 
-Pyth
+Ein weiterer wichtiger Aspekt, der die Performance von Python stark beeinflusst ist die dynamische Typisierung von Variablen. 
+Während man Objekten in Java immer einen festen Datentyp zuweisen muss, ist dies in Python nicht nötig. So können Variablen on the 
+fly den Typ wechseln, was das Programmieren in vielen Fällen deutlich vereinfacht. Für die Performance ist dynamische Typisierung 
+nicht förderlich. Um logische Operationen durchführen zu können, müssen Objekte intern typisiert werden, was Python komplett übernimmt. 
+Da dieser Mehraufwand in Java nicht notwendig ist, ist Java in vielen Fällen deutlich performanter als Python.\autocite[Vgl.][]{Shaw.16.7.2018}
 
 
 \subsection{Memory Management und Garbage Collection}
@@ -132,3 +142,5 @@ werden noch relevante Objekte markiert. In der Sweep-Phase, werden die Lücken z
 freigegeben.\autocite[Vgl.][]{OracleGC.2021}
 
 \section{These zum Performanceunterschied}
+
+Aus den in Kapitel 
