@@ -35,7 +35,6 @@ public class Main {
 				// draw the current game status
 				drawGame(game);
 				nextMove();
-				System.out.println(game.getField());
 			}
 			// draw the final field
 			drawGame(game);
