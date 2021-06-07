@@ -83,6 +83,7 @@ vorhanden ist. Ist dies der Fall wird dieser Wert zurückgegeben und es findet k
 so, wird ein neuer Eintrag im Dictionary angelegt.
 
 \section{Unterschiede zwischen den Programmiersprachen Java und Python}
+\label{chap:unterschiede_python_java}
 Neben den in Kapitel \ref{chap:implementierungen} gezeigten Unterschieden bei der Implementierung, können weitere Unterschiede 
 bei der Performance durch die unterschiedlichen Funktionsweisen und Eigenschaften der beiden Sprachen entstehen.
 
@@ -143,4 +144,8 @@ freigegeben.\autocite[Vgl.][]{OracleGC.2021}
 
 \section{These zum Performanceunterschied}
 
-Aus den in Kapitel 
+Die in Kapitel \ref{chap:unterschiede_python_java} Unterschiede von Java und Python zeigen, dass Java durch den in der JVM integrierten 
+JIT-Compiler und die statische Typisierung in den meisten Fällen eine bessere Performance aufweist, als Python. 
+Dynamische Typisierung hat den Vorteil, dass sie für den Entwickler einfacher in der Handhabung ist. Diese macht allerdings 
+Codeoptimierung hinsichtlich der verwendeten Datentypen unmöglich, weshalb trotz Memoisierung eine bessere Laufzeit von 
+Java zu erwarten ist.
