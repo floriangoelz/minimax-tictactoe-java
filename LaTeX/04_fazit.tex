@@ -1,13 +1,38 @@
 \chapter{Fazit \& Ausblick}
 
 \section{Fazit}
+Ziel dieser Arbeit war es den Minimax-Algorithmus am Beispiel des Spiels Tic-Tac-Toe in Java zu implementieren. Auf dieser Basis 
+sollten dann die Performanceunterschiede zwischen Java und Python getestet und analysiert, sowie Unterschiede bei der Implementierung 
+aufgezeigt werden. Da Python keinen JIT-Compiler verwendet und keine statische Typisierung gewährleistet werden kann, wurde die These 
+aufgestellt, dass die Java-Implementierung beim Performancetest besser abschneiden wird als die Python-Umsetzung. Bei der Implementierung 
+in Java ist besonders die deutlich höhere Anzahl an Codezeilen und die schlechtere Lesbarkeit im Vergleich zu Python aufgefallen. 
+Unklar waren hingegen die Unterschiede bei der Nutzung des Arbeitsspeichers, da beide Sprachen hierbei Vor- und Nachteile vorweisen. 
+Es konnte gezeigt werden, dass beim Aufruf der \code{value} Funktion die Laufzeit durch die Nutzung von Java und Memoisierung um etwa 
+80\% gesenkt werden kann. Überraschend war hingegen, dass bei der Implementierung in Java trotz Memoisierung fast doppelt so viel 
+Arbeitsspeicher belegt wurde, als bei der Python Implementierung.
+
 
 \section{Ausblick}
-Kleine Liste was vorkommen könnte (kannst aber selbstverständlich auch selbst irgendwas finden :D) 
+Es konnte gezeigt werden, dass die Wahl der Programmiersprache einen großen Einfluss auf die Performance eines Programms hat. 
+Hardwarenahe, kompilierte Sprachen haben den Vorteil, dass weniger Schritte beim Übersetzungsprozess benötigt werden und während der Laufzeit 
+keine Übersetzung mehr stattfindet. Möchte man also die Performance weiter verbessern, könnte eine Umsetzung in der Sprache C bzw. C++ sinnvoll 
+sein. Wobei dabei die plattformunabhängigkeit verloren geht. 
 
-- Speicherung in 1x Byte und 1x Short (8 Bit aus dem Byte und 16 Bit aus dem Short), um ein weiteres Byte zu sparen (int hat 4 byte). Evtl. auch
-Speicherung mit 18 Booleans (und ggf. in einem zweidimensionalen array vom typ boolean), aber ka ob das schneller ist. Als These könntest dus aber bringen
+Die Nutzung von Memosierung zum Speichern von bereits berechneten Ergebnissen der \code{value} Funktion hat sich als sinnvolle 
+Optimierung erwiesen. Dieser Ansatz kann auch auf weitere Funktionen angewandt werden, bei denen redundante Funktionsaufrufe vorkommen. 
+Ein Kandidat wäre hierbei die \code{nextStates} Funktion, die für einen gegebenen Zustand und Spieler alle möglichen Folgezustände berechnet. 
+Diese wird in der rekursiven \code{value} Funktion aufgerufen, wodurch redundante Funktionsaufrufe entstehen, die verhindert werden können. 
 
-- Weitere Optimierung (auch in Einleitung angedeutet): Weiteres Caching (z. B. die NextStates und nicht nur deren Wert), Wechsel der Programmiersprache, Upgrade der CPU - 
-oder sogar einmalige Speicherung des optimalen Zuges bei jedem Zustand, sodass dieser künftig direkt ausgewählt werden kann und der Algorithmus nur einmalig
-durchlaufen werden muss, um alle Werte zu errechnen und zu Speichern
+Bei der Performanceoptimierung muss allerdings auch immer der Anwendungsfall bedacht werden. So macht eine KI für ein Spiel wie Tic-Tac-Toe 
+kaum Sinn Performanceoptimierung im Millisekundenbereich vorzunehmen. Ob der Spieler nun 45 ms oder 8 ms warten muss, ist für einen menschlichen 
+Gegenspieler kaum relevant, da er den Unterschied nicht bemerkt. Bei komplexeren Spielen bzw. Algorithmen kann eine Umsetzung in einer 
+geeigneteren Sprache hingegen sinnvoll sein.
+
+%Kleine Liste was vorkommen könnte (kannst aber selbstverständlich auch selbst irgendwas finden :D) 
+
+%- Speicherung in 1x Byte und 1x Short (8 Bit aus dem Byte und 16 Bit aus dem Short), um ein weiteres Byte zu sparen (int hat 4 byte). Evtl. auch
+%Speicherung mit 18 Booleans (und ggf. in einem zweidimensionalen array vom typ boolean), aber ka ob das schneller ist. Als These könntest dus aber bringen
+
+%- Weitere Optimierung (auch in Einleitung angedeutet): Weiteres Caching (z. B. die NextStates und nicht nur deren Wert), Wechsel der Programmiersprache, Upgrade der CPU - 
+%oder sogar einmalige Speicherung des optimalen Zuges bei jedem Zustand, sodass dieser künftig direkt ausgewählt werden kann und der Algorithmus nur einmalig
+%durchlaufen werden muss, um alle Werte zu errechnen und zu Speichern
