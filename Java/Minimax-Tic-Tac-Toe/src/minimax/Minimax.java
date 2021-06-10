@@ -55,7 +55,8 @@ public class Minimax {
 	/**
 	 * Calculates the value of a given state.
 	 * <p>
-	 * The more possible moves lead to victory the higher is the value of a state
+	 * Returns the value of the worst possible state that can be reached from a given state
+	 * the higher the value the better the given state is for the current player
 	 * 
 	 * @param state  of the board
 	 * @param player whose value shall be calculated
