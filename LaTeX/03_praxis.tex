@@ -2,9 +2,9 @@
 
 \section{Implementierung von Tic-Tac-Toe und Minimax}
 Ziel dieses Kapitels ist es die Implementierung in Java zu erläutern. Da der Fokus dieser Arbeit jedoch auf der Performance
-des Algorithmus in Java liegt und eine detaillierte Erläutertung der Implementierung sehr aufwendig wäre, folgt lediglich
+des Algorithmus in Java liegt und eine detaillierte Erläuterung der Implementierung sehr aufwendig wäre, folgt lediglich
 ein grober Überblick über die meisten Aspekte der Implementierung. Lediglich Teile der Implementierung, die besonders relevant
-für die Performance des Programms sind werden detaillierter erläutert. 
+für die Performance des Programms sind, werden detaillierter erläutert. 
 
 \subsection{Objektorientierung: Unterteilung in Klassen}
 Zunächst folgt eine grobe Erläuterung der drei Klassen, in die die Implementierung unterteilt wurde.
@@ -54,14 +54,14 @@ von Relevanz. Der in Abbildung \ref{fig:tictactoestates} gezeigte mögliche zwei
 \end{figure}
 Auf diese Weise können zunächst fünf Byte an Speicher eingespart werden. Ein noch größerer Vorteil ist jedoch der große Performancevorteil, der sich bei dieser
 Implementierung ergibt. Da Computer komplett auf dem Binärsystem basieren sind Operationen, welche lediglich einzelne Bits setzen, deutlich schneller als das
-Setzen eines ganzes Bytes. Dies hat einen besonders großen Einfluss auf die Laufzeit des Minimax Algorithmus (siehe \ref{chap:minimax}), da dieser immer wieder
+Setzen eines ganzen Bytes. Dies hat einen besonders großen Einfluss auf die Laufzeit des Minimax Algorithmus (siehe \ref{chap:minimax}), da dieser immer wieder
 rekursiv durch die verschiedenen Zustände rechnen muss und sich deswegen eine Vielzahl an Zugriffen ergeben.
 
 
 \subsubsection{Caching von Folgezuständen}
 Wie in Kapitel \ref{chap:minimax} bereits angedeutet, werden im Laufe eines Tic-Tac-Toe Spiels immer wieder eine große Menge an Folgezuständen geprüft, 
 damit der Minimax-Algorithmus in der Lage ist, die verschiedenen bestmöglichen Züge zu ermitteln. Hierbei wird jedem Zustand ein Wert zugeordnet, welcher
-anzeigt ob der Zustand im schlechtesten Fall zum Sieg, zum Untenschieden oder zur Niederlage für den Algorithmus führt.
+anzeigt, ob der Zustand im schlechtesten Fall zum Sieg, zum Unentschieden oder zur Niederlage für den Algorithmus führt.
 Um zu verhindern, dass die Zustände immer wieder neu auf ihren Wert geprüft werden müssen, wird eine Map<Integer, Integer> erstellt, welche einen
 Cache darstellt, der als Schlüssel den Zustand und als Wert den für den Zustand errechneten Wert speichern kann. Jedes Mal, wenn der Wert für einen
 möglichen Zustand errechnet werden soll, wird zunächst geschaut, ob dieser Wert bereits im Cache ist. Sollte der Wert sich im Cache befinden, so wird
