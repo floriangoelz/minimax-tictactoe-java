@@ -145,7 +145,10 @@ freigegeben.\autocite[Vgl.][]{OracleGC.2021}
 \section{These zum Performanceunterschied}
 
 Die in Kapitel \ref{chap:unterschiede_python_java} Unterschiede von Java und Python zeigen, dass Java durch den in der JVM integrierten 
-JIT-Compiler und die statische Typisierung in den meisten Fällen eine bessere Performance aufweist, als Python. 
+JIT-Compiler und die statische Typisierung in den meisten Fällen eine bessere Performance aufweist als Python. 
 Dynamische Typisierung hat den Vorteil, dass sie für den Entwickler einfacher in der Handhabung ist. Diese macht allerdings 
-Codeoptimierung hinsichtlich der verwendeten Datentypen unmöglich, weshalb trotz Memoisierung eine bessere Laufzeit von 
-Java zu erwarten ist.
+Codeoptimierung hinsichtlich der verwendeten Datentypen unmöglich, weshalb hierbei Performance verloren geht. Darüber 
+hinaus nutzt Python im Gegensatz zu Java keinen JIT Compiler, der weitere Codeoptimierung bei der Übersetzung von Bytecode in Maschinencode 
+vornehmen könnte. Aus diesen Gründen ist es sehr wahrscheinlich, dass der Algorithmus in Java eine kürzere Laufzeit benötigt, als 
+in Python. Hinsichtlich des Verbrauchs des Arbeitsspeichers ist eine Vorhersage schwierig, da beide Methoden des Memory Managements 
+Vor- und Nachteile haben. Trotz alledem sind keine extremen Unterschiede zu erwarten.
